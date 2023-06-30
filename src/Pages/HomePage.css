@@ -1,0 +1,85 @@
+.HomePage {
+  overflow-y: scroll;
+  height: 100vh;
+  background-image: url("../Assets/hero-2.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  object-fit: contain;
+}
+
+.hero-section {
+  height: calc(100vh - 110px);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10vw;
+  gap: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: 30vw;
+}
+
+.buttons button {
+  width: auto;
+  flex: 1 0;
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: 600;
+
+  appearance: none;
+
+  border: none;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 200px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--primary-box-shadow);
+}
+
+.buttons button:hover {
+  transform: scale(1.1);
+}
+
+.hero-text {
+  height: 20vh;
+  text-shadow: var(--primary-box-shadow);
+  padding: 10px;
+  color: white;
+  width: 50vw;
+}
+
+.hero-text h1 {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.page-content {
+  margin: 0;
+  padding: 10vh 0;
+  background-color: white;
+  height: 200vh;
+  border: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 20px;
+  
+  padding: 30px 0;
+}
+

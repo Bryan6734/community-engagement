@@ -1,0 +1,92 @@
+.CalendarPage {
+  overflow-y: scroll;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar {
+  height: 100vh;
+  width: 100%;
+}
+
+select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1.25px solid #ccc;
+  width: 200px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--secondary-box-shadow);
+}
+
+select:focus {
+  outline: none;
+}
+
+select:hover {
+  box-shadow: var(--primary-box-shadow);
+}
+
+select option {
+  background-color: #fff;
+  color: #000;
+}
+
+select::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%) rotate(45deg);
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  padding: 3px;
+  pointer-events: none;
+}
+
+.rbc-day-slot .rbc-events-container {
+  /* override default with margin right 0 */
+  margin-right: 0 !important;
+  /* background-color: white !important; */
+}
+
+.rbc-event-label {
+  font-size: 0.6rem !important;
+}
+
+.rbc-event {
+
+  font-size: 0.9rem;
+  text-align: left;
+
+  transition: 0.3s cubic-bezier(0.19, 1, 0.19, 1) all;
+}
+
+.rbc-event:hover {
+  cursor: pointer;
+  white-space: break-spaces;
+  z-index: 1;
+  min-height: 15% !important;
+  
+  transform: scale(1.25);
+  font-size: 0.7rem;
+}
+
+.rbc-event-content {
+  white-space: pre-line !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  word-wrap: normal !important;
+}
+
+.rbc-event-content:hover {
+  overflow: scroll;
+}
+

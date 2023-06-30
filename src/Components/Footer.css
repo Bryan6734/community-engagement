@@ -1,0 +1,17 @@
+.Footer {
+  background-color: var(--primary-color);
+  color: white;
+
+  padding: 20px;
+}
+
+.Footer .footer-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Footer p {
+  color: var(--gray-color);
+}
