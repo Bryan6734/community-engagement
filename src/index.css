@@ -1,6 +1,6 @@
 :root {
   --primary-color: #104484;
-  --accent-color: #8fb8ea;
+  --accent-color: #949fae60;
   --secondary-color: #1f1f1f;
   --tertiary-color: #ffffff;
   --select-color: #fafafa;
@@ -76,6 +76,10 @@ p {
   font-size: clamp(1rem, 5vw, 1.25rem);
 }
 
+ul {
+  list-style: none;
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -83,7 +87,8 @@ p {
   z-index: 1000;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: blur(1px);
+  /* backdrop-filter: blur(1px); */
+  background-color:rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,9 +98,9 @@ p {
 .modal {
   background: white;
   max-width: 80vw;
-  max-height: 80vh;
+  max-height: 85vh;
   width: 500px;
-  height: 400px;
+  height: 450px;
   overflow: auto;
   border: none;
   border-radius: 5px;
@@ -115,7 +120,7 @@ p {
   text-align: center;
   justify-content: center;
   background-color:rgba(0, 0, 0, 0.025);
-
+  z-index: 200;
   width: 100%;
   height: 100%;
   gap: 10px;
