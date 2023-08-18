@@ -1,0 +1,69 @@
+.AccountPage {
+  overflow-y: scroll;
+}
+
+input {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 0 20px;
+  font-size: 1.5rem;
+  outline: none;
+  box-shadow: var(--secondary-box-shadow);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.sign-in-submit {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  /* color: gray; */
+  gap: 10px;
+
+}
+
+.sign-in-submit p {
+  font-size: 0.8rem;
+}
+
+.sign-in-submit .submit {
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.row div {
+  flex: 1;
+}
+
+.row-2 {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+/* in row 2, it should be 75 25 */
+.row-2 div {
+  flex: 1;
+}

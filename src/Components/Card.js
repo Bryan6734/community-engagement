@@ -2,14 +2,15 @@ import React from 'react'
 import './Card.css'
 
 function Card({ title, description, image, link }) {
+
   return (
-    <div className="Card">
-      <img src={image} alt="" />
+    <li className="Card">
       <div className="text-content">
         <h3>{title}</h3>
+        <span>education</span>
       </div>
-    </div>
-  )
+    </li>
+  );
 }
 
 export default Card

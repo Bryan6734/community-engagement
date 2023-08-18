@@ -5,7 +5,7 @@
 }
 
 .mini-navbar {
-  width: 100%;
+  width: 100vw;
   height: 33px;
 
   margin-top: -2px;
@@ -17,14 +17,18 @@
 }
 
 .main-navbar {
-  width: 100%;
+  width: 100vw;
   min-height: 80px;
   background-color: var(--tertiary-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10vw;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: var(--secondary-box-shadow);
+}
+
+.main-navbar .logo {
+  cursor: pointer;
 }
 
 .main-navbar .logo img {
@@ -86,6 +90,18 @@
 .main-navbar .links .profile-pic:hover {
   cursor: pointer;
   /* border: 3px dotted var(--primary-color); */
+}
+
+.main-navbar .logo-title {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: clamp(1rem, 5vw, 2rem);
+}
+
+.main-navbar .logo-subtitle {
+  color: var(--secondary-color);
+  font-weight: 400;
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
 }
 
 

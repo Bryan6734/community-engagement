@@ -1,0 +1,16 @@
+.InnerModal { 
+  padding: 20px;
+}
+
+.sign-up-event {
+  box-shadow: var(--secondary-box-shadow);
+  background-color: var(--primary-color);
+  font-size: 1.75rem;
+  
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}

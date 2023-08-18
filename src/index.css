@@ -1,9 +1,13 @@
 :root {
   --primary-color: #104484;
+  --accent-color: #e7f0ff;
   --secondary-color: #1f1f1f;
   --tertiary-color: #ffffff;
   --select-color: #fafafa;
   --gray-color: #888888;
+
+  /* blue button color call to action */
+  --cta-color: #1f1f1f;
 
   --primary-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
   --secondary-box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 8px;;
@@ -14,6 +18,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+button, input, select {
+  color: black;
 }
 
 body {
@@ -53,6 +61,7 @@ hr {
 
 h1 {
   font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
 }
 
 h2 {
@@ -92,5 +101,4 @@ p {
   border-radius: 5px;
 
   box-shadow: var(--primary-box-shadow);
-  padding: 5px;
 }

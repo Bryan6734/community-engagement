@@ -69,16 +69,6 @@ select::after {
   transition: 0.3s cubic-bezier(0.19, 1, 0.19, 1) all;
 }
 
-.rbc-event:hover {
-  cursor: pointer;
-  white-space: break-spaces;
-  z-index: 1;
-  min-height: 15% !important;
-  
-  transform: scale(1.25);
-  font-size: 0.7rem;
-}
-
 .rbc-event-content {
   white-space: pre-line !important;
   overflow: hidden !important;

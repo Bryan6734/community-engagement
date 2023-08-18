@@ -1,20 +1,26 @@
 .HomePage {
-  overflow-y: scroll;
-  height: 100vh;
-  background-image: url("../Assets/hero-2.jpg");
+  /* background-image: url("../Assets/hero-2.jpg");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   object-fit: contain;
+  */
+  overflow-y: scroll;
 }
 
 .hero-section {
+  background-image: url("../Assets/hero-2.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+
+  object-fit: contain;
   height: calc(100vh - 110px);
   backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10vw;
+  padding-left: 10vw; 
   gap: 5px;
 }
 

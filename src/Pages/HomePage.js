@@ -13,7 +13,6 @@ import { ref, uploadBytes } from "firebase/storage";
 import "./HomePage.css";
 import Typed from "typed.js";
 import Card from "../Components/Card";
-
 import cardImage from "../Assets/hero.jpg";
 import teamImage from "../Assets/team.png";
 
@@ -44,14 +43,12 @@ function HomePage() {
 
     const options = {
       strings: [
-        "Connect with your community.",
         "Volunteer with your community.",
-        "Engage with your community.",
       ],
       typeSpeed: 40,
       backDelay: 2000,
       backSpeed: 35,
-      loop: true,
+      loop: false,
     };
 
     // console.log("hello");

@@ -1,0 +1,29 @@
+.AdminPage {
+  overflow-y: scroll;
+}
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  padding: 15px 10px;
+  border-radius: 5px;
+  border: 1.25px solid #ccc;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--secondary-box-shadow);
+  flex: 1;
+}
+
+button:hover {
+  box-shadow: var(--primary-box-shadow);
+}
+
+.search-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+}
