@@ -7,7 +7,7 @@ import SignInForm from "../Components/SignInForm";
 import Profile from "../Components/Profile";
 
 const SignInButtons = () => {
-  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(true);
 
   const displaySignInForm = () => {
     return (
@@ -23,13 +23,9 @@ const SignInButtons = () => {
         <SignUpForm isSigningIn={isSigningIn} setIsSigningIn={setIsSigningIn} />
       </>
     );
-  }
+  };
 
-  return (
-    <>
-      {isSigningIn ? displaySignInForm() : displaySignUpForm()}
-    </>
-  );
+  return <>{isSigningIn ? displaySignInForm() : displaySignUpForm()}</>;
 };
 
 function AccountPage() {
@@ -51,7 +47,7 @@ function AccountPage() {
           <h1>My Account</h1>
         </div>
 
-        <div className="block">{user ? <Profile/> : <SignInButtons />}</div>
+        <div className="block">{user ? <Profile /> : <SignInButtons />}</div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import Card from '../Components/Card'
-import './PartnersPage.css'
+import React, { useState, useEffect } from "react";
+import Card from "../Components/Card";
+import Loading from "../Components/Loading";
+import "./PartnersPage.css";
 
 import { auth, googleProvider, db, storage } from "../config/firebase";
 import {
@@ -15,31 +16,27 @@ import {
 import { ref, uploadBytes } from "firebase/storage";
 
 function PartnersPage() {
-
-  const [partners, setPartners] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [partners, setPartners] = useState([]);
+  const [selectedPartner, setSelectedPartner] = useState(null);
 
   useEffect(() => {
-
     const getPartners = async () => {
-      const partnersRef = collection(db, 'sites')
-      const partnersDocs = await getDocs(partnersRef)
-
-      let partners = []
-
+      const partnersRef = collection(db, "sites");
+      const partnersDocs = await getDocs(partnersRef);
+      let partners = [];
       partnersDocs.forEach((doc) => {
-        let partner = doc.data()
-        partner = { ...partner, id: doc.id }
-        partners.push(partner)
-      }
-      )
+        let partner = doc.data();
+        partner = { ...partner, id: doc.id };
+        partners.push(partner);
+      });
 
-      setPartners(partners)
-    }
+      setPartners(partners);
+      setIsLoaded(true);
+    };
 
-    getPartners()
-
-
-  }, [])
+    getPartners();
+  }, []);
 
   return (
     <div className="PartnersPage">
@@ -48,21 +45,43 @@ function PartnersPage() {
           <hr />
           <h1>Our Partners</h1>
           <p>
-            Community Engagement Programs and Partnerships (CEPP) partners with local organizations to provide Milton Academy student volunteers. These organizations tackle issues such as environmental justice, food and housing insecurity, public
-            health, education, immigration, and more.
+            Community Engagement Programs and Partnerships (CEPP) partners with
+            local organizations to provide Milton Academy student volunteers.
+            These organizations tackle issues such as environmental justice,
+            food and housing insecurity, public health, education, immigration,
+            and more.
           </p>
         </div>
 
+        <div className="block"></div>
+
         <div className="block">
-          <ul className="partner-sites-grid">
-            {partners.map((partner) => {
-              return <Card key={partner.id} title={partner.title}></Card>;
-            })}
-          </ul>
+          <div className="partner-sites-container">
+            {isLoaded ? null : <Loading />}
+
+            <ul className="partner-sites-list">
+              {partners.map((partner, index) => {
+                return (
+                  <Card
+                    key={partner.id}
+                    partner={partner}
+                    setSelectedPartner={setSelectedPartner}
+                  ></Card>
+                );
+              })
+              
+              }
+            </ul>
+
+            <div className="selected-partner-info">
+              <h2>{selectedPartner?.title}</h2>
+              <p>{selectedPartner?.description}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default PartnersPage
+export default PartnersPage;

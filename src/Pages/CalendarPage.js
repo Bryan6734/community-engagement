@@ -17,6 +17,7 @@ import { collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 import Footer from "../Components/Footer";
 import InnerModal from "../Components/InnerModal";
+import Loading from "../Components/Loading";
 
 Modal.setAppElement("#root");
 
@@ -27,6 +28,7 @@ function CalendarPage() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const [isLoaded, setIsLoaded] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
@@ -43,34 +45,39 @@ function CalendarPage() {
     const q = query(eventsCollectionRef, where("site", "==", siteRef));
 
     const data = await getDocs(q);
-    
-    let recurringEvents = []
+
+    let recurringEvents = [];
 
     data.docs.forEach((doc) => {
-
       let event = doc.data();
-      event.id = doc.id
+      event.id = doc.id;
       event.start = event.start_time.toDate();
       event.end = event.end_time.toDate();
-      event.final_date = event.final_date.toDate()
+      event.final_date = event.final_date.toDate();
 
-      let weeks = Math.floor((event.final_date.getTime() - event.start.getTime()) / (7 * 24 * 60 * 60 * 1000));
-      console.log(weeks)
+      let weeks = Math.floor(
+        (event.final_date.getTime() - event.start.getTime()) /
+          (7 * 24 * 60 * 60 * 1000)
+      );
+      console.log(weeks);
 
       for (let week = 0; week < weeks; week++) {
-
         let new_event = JSON.parse(JSON.stringify(event));
 
-        new_event.start = moment(event.start_time.toDate()).add(week, 'weeks').toDate();
-        new_event.end = moment(event.end_time.toDate()).add(week, 'weeks').toDate();
+        new_event.start = moment(event.start_time.toDate())
+          .add(week, "weeks")
+          .toDate();
+        new_event.end = moment(event.end_time.toDate())
+          .add(week, "weeks")
+          .toDate();
 
         recurringEvents.push(new_event);
-
-      }     
+      }
     });
 
     console.log("Events:", recurringEvents);
     setEvents(recurringEvents);
+    setIsLoaded(true);
     console.log(siteRef);
   };
 
@@ -78,7 +85,6 @@ function CalendarPage() {
     try {
       const eventsCollectionRef = collection(db, "events");
       const data = await getDocs(eventsCollectionRef);
-
 
       const events = data.docs.map((doc) => {
         const event = doc.data();
@@ -89,13 +95,12 @@ function CalendarPage() {
       });
 
       const all_events = events.map((event) => {
-
         let start_time = event.start_time.toDate();
         let end_time = event.end_time.toDate();
         let final_date = event.final_date.toDate();
 
         if (event.recurrence == "weekly") {
-          console.log('weekly')
+          console.log("weekly");
 
           let new_events = [];
 
@@ -104,22 +109,25 @@ function CalendarPage() {
           while (current_date < final_date) {
             let new_event = event;
             new_event.start_time = current_date;
-            new_event.end_time = new Date(current_date.getTime() + (end_time.getTime() - start_time.getTime()));
+            new_event.end_time = new Date(
+              current_date.getTime() +
+                (end_time.getTime() - start_time.getTime())
+            );
             new_events.push(new_event);
-            current_date = new Date(current_date.getTime() + 7 * 24 * 60 * 60 * 1000);
+            current_date = new Date(
+              current_date.getTime() + 7 * 24 * 60 * 60 * 1000
+            );
           }
 
           return new_events;
         } else {
-          console.log('Recurrence' + event.recurrence)
+          console.log("Recurrence" + event.recurrence);
         }
-      })
+      });
 
       // in the end, return one huge list of all recurring events
-      console.log(all_events)
+      console.log(all_events);
       setEvents(all_events);
-
-
 
       // setEvents(events);
     } catch (error) {
@@ -136,27 +144,14 @@ function CalendarPage() {
 
   const handleOptionChange = (e) => {
     setLocation(e.target.value);
+    setIsLoaded(false);
     getEventsBySiteId(e.target.value);
   };
 
   const handleEventClick = (e) => {
-    // setViewMode("day");
     setSelectedEvent(e);
     openModal();
-
-    // const element = signupRef.current;
-    // const offset = 45;
-    // const elementPosition = element.getBoundingClientRect().top;
-    // const offsetPosition = elementPosition - offset + window.scrollY;
-
-    // window.scrollTo({
-    //   top: offsetPosition,
-    //   behavior: "smooth",
-    // });
-
-    // e.action();
   };
-
 
   return (
     <div className="CalendarPage">
@@ -184,11 +179,11 @@ function CalendarPage() {
           overlayClassName="overlay"
           className="modal"
         >
-          <InnerModal selectedEvent={selectedEvent}/>
-
+          <InnerModal selectedEvent={selectedEvent} />
         </Modal>
         <div className="block">
           <div className="calendar">
+            {isLoaded ? null : <Loading />}
             <Calendar
               localizer={localizer}
               events={events}
@@ -221,7 +216,7 @@ function CalendarPage() {
         </div>
 
         <div className="block">
-          <EventManager/>
+          <EventManager />
         </div>
       </div>
     </div>

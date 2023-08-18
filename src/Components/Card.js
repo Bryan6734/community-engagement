@@ -1,13 +1,14 @@
 import React from 'react'
 import './Card.css'
 
-function Card({ title, description, image, link }) {
+function Card({ partner, setSelectedPartner }) {
+
+
 
   return (
-    <li className="Card">
+    <li className="Card" onClick={() => setSelectedPartner(partner)}>
       <div className="text-content">
-        <h3>{title}</h3>
-        <span>education</span>
+        <h3>{partner?.title}</h3>
       </div>
     </li>
   );

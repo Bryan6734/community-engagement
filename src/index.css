@@ -1,6 +1,6 @@
 :root {
   --primary-color: #104484;
-  --accent-color: #e7f0ff;
+  --accent-color: #8fb8ea;
   --secondary-color: #1f1f1f;
   --tertiary-color: #ffffff;
   --select-color: #fafafa;
@@ -102,3 +102,37 @@ p {
 
   box-shadow: var(--primary-box-shadow);
 }
+
+.Loading {
+  /* display: flex; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color:rgba(0, 0, 0, 0.025);
+
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

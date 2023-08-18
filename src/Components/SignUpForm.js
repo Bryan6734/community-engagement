@@ -41,16 +41,18 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
     const lastNameTitleCase =
       lastName.charAt(0).toUpperCase() + lastName.slice(1);
 
-    // create user in the login database (but not in the collection)
-    const { user } = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
+    try {
+
+      // create user in the login database (but not in the collection)
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
     );
 
     // check if email has numbers. if so, it is a student email
     const graduationYear = email.match(/\d+/g) ? email.match(/\d+/g)[0] : "0";
-
+    
     // create user as a document in the collection
     const userRef = doc(collection(db, "users"), user.uid);
     const userData = {
@@ -62,13 +64,16 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
       volunteer_history: [],
     };
     await setDoc(userRef, userData);
-
+    
     // clear the form inputs
     setFirstName("");
     setLastName("");
     setEmail("");
     setPassword("");
     setPhoneNumber("");
+  } catch (error) {
+    alert(error.message);
+  }
   };
 
   return (

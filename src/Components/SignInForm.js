@@ -25,7 +25,7 @@ function SignInForm( {isSigningIn, setIsSigningIn} ) {
       const user = userCredential.user;
       console.log(user);
     } catch (error) {
-      console.log(error);
+      alert(error.message)
     }
   };
 
