@@ -36,7 +36,6 @@ function SignInForm( {isSigningIn, setIsSigningIn} ) {
         <input
           type="text"
           id='email'
-          placeholder="stanley_mustang24@milton.edu"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -47,7 +46,6 @@ function SignInForm( {isSigningIn, setIsSigningIn} ) {
         <input
           type="password"
           id='password'
-          placeholder="ilovecommunityengagement123"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

@@ -82,9 +82,9 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
         <div className="field">
           <p>Preferred First Name</p>
           <input
+
             type="text"
             id="first-name"
-            placeholder="Stanley"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
@@ -95,7 +95,6 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
           <input
             type="text"
             id="last-name"
-            placeholder="Mustang"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -108,7 +107,7 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
           <input
             type="text"
             id='email'
-            placeholder="stanley_mustang24@milton.edu"
+
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -120,7 +119,6 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
             type="text"
             id='phone-number'
             value={phoneNumber}
-            placeholder="617-898-2470"
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
         </div>
@@ -131,7 +129,6 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
         <input
           type="password"
           id='password'
-          placeholder="ilovecommunityengagement123"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

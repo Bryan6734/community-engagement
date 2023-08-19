@@ -8,7 +8,7 @@ input {
   border: 1px solid #ccc;
   border-radius: 2px;
   padding: 0 20px;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 4vw, 1.5rem);
   outline: none;
   box-shadow: var(--secondary-box-shadow);
 }
@@ -23,9 +23,7 @@ input {
   display: flex;
   flex-direction: row;
   text-align: center;
-  /* color: gray; */
   gap: 10px;
-
 }
 
 .sign-in-submit p {
@@ -39,11 +37,11 @@ input {
   border: none;
 }
 
-form {
+form,
+.Profile {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   gap: 20px;
 }
 
@@ -66,4 +64,37 @@ form {
 /* in row 2, it should be 75 25 */
 .row-2 div {
   flex: 1;
+}
+
+.Profile .row-2 {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.Profile .field input {
+  background-color: #cccccc52;
+  color: rgb(140, 140, 140);
+}
+
+@media (max-width: 650px) {
+
+  .field input {
+    height: 50px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+  .row-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .Profile .row-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
 }
