@@ -1,28 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
-import { signOut } from "firebase/auth";
-import { auth, googleProvider, db, storage } from "../config/firebase";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "../config/firebase";
+import { collection } from "firebase/firestore";
 import "./HomePage.css";
 import Typed from "typed.js";
-import Card from "../Components/Card";
-import teamImage from "../Assets/team.png";
-
-import Footer from "../Components/Footer";
 
 function HomePage() {
   const heroText = useRef(null);
   const navigate = useNavigate();
-
-  const usersCollectionRef = collection(db, "users");
 
   const [user, setUser] = useState(null);
 
@@ -34,44 +19,51 @@ function HomePage() {
     });
   }, [user]);
 
-useEffect(() => {
-  const options = {
-    strings: ["Volunteer with your community."],
-    typeSpeed: 40,
-    backDelay: 2000,
-    backSpeed: 35,
-    loop: false,
-  };
+  useEffect(() => {
+    const options = {
+      strings: ["Volunteer with your community."],
+      typeSpeed: 40,
+      backDelay: 2000,
+      backSpeed: 35,
+      loop: false,
+    };
 
-  const typed = new Typed(heroText.current, options);
+    const typed = new Typed(heroText.current, options);
 
-  return () => {
-    typed.destroy();
-  };
-}, []);
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
   return (
     <div className="HomePage">
       <div className="hero-section">
-        <div className="hero-text">
-          <h1>
-            <span ref={heroText}></span>
-          </h1>
-        </div>
+        <div className="contents">
+          <div className="hero-text">
+            <h1>
+              <span ref={heroText}></span>
+            </h1>
+          </div>
 
-        <div className="buttons">
-          <button className="learn-more">About Us</button>
-          <button className="login" onClick={() => {
-            if (user){
-              navigate('/calendar')
-            } else {
-              navigate('/account')
-            }
-          }}>Volunteer</button>
+          <div className="buttons">
+            <button className="learn-more" onClick={() => {navigate("/calendar")}}>Calendar</button>
+            <button
+              className="login"
+              onClick={() => {
+                if (user) {
+                  navigate("/calendar");
+                } else {
+                  navigate("/account");
+                }
+              }}
+            >
+              Volunteer
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="page-content blur">
+      {/* <div className="page-content blur">
         <div className="block">
           <hr />
           <h1 className="center">Community Engagement</h1>
@@ -91,9 +83,7 @@ useEffect(() => {
         </div>
 
 
-      </div>
-
-      {/* <Footer /> */}
+      </div> */}
     </div>
   );
 }

@@ -53,7 +53,7 @@ function InnerCreateModal({
     formatFinalDate(selectedSlot?.start)
   );
 
-  const [recurrence, setRecurrence] = useState("biweekly");
+  const [recurrence, setRecurrence] = useState("bi-weekly");
   const [mode, setMode] = useState("in-person");
   const [maxVolunteers, setMaxVolunteers] = useState(10);
   const [description, setDescription] = useState(partnerSite?.description);
@@ -215,7 +215,7 @@ function InnerCreateModal({
             <div>
               <label htmlFor="">Recurrence</label>
               <select
-                onChange={handleRecurrenceChange}
+                onChange={(e) => setRecurrence(e.target.value)}
                 value={recurrence}
                 name="recurrence"
               >

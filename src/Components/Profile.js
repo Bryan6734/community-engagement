@@ -15,6 +15,19 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [graduationYear, setGraduationYear] = useState("");
+  const [homeStatus, setHomeStatus] = useState("");
+  const [studentDriver, setStudentDriver] = useState("");
+  const [drivingCapacity, setDrivingCapacity] = useState("");
+
+  const toTitleCase = (str) => {
+    if (str === undefined || str === "") {
+      return "";
+    }
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    );
+  };
 
   const fetchFirebaseUser = async () => {
     const userRef = doc(db, "users", auth.currentUser?.uid);
@@ -23,11 +36,14 @@ function Profile() {
     if (userDoc.exists) {
       const userData = userDoc.data();
 
-      setFirstName(userData.first_name);
-      setLastName(userData.last_name);
-      setEmail(userData.email);
-      setPhoneNumber(userData.phone_number);
-      setGraduationYear(userData.graduation_year);
+      setFirstName(userData?.first_name);
+      setLastName(userData?.last_name);
+      setEmail(userData?.email);
+      setPhoneNumber(userData?.phone_number);
+      setGraduationYear(userData?.graduation_year);
+      setHomeStatus(userData?.home_status);
+      setStudentDriver(userData?.student_driver);
+      setDrivingCapacity(userData?.driving_capacity);
 
       localStorage.setItem("user", JSON.stringify(userData));
       setIsLoaded(true);
@@ -40,11 +56,14 @@ function Profile() {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       setUser(user);
-      setFirstName(userData.first_name);
-      setLastName(userData.last_name);
-      setEmail(userData.email);
-      setPhoneNumber(userData.phone_number);
-      setGraduationYear(userData.graduation_year);
+      setFirstName(userData?.first_name);
+      setLastName(userData?.last_name);
+      setEmail(userData?.email);
+      setPhoneNumber(userData?.phone_number);
+      setGraduationYear(userData?.graduation_year);
+      setHomeStatus(userData?.home_status);
+      setStudentDriver(userData?.student_driver);
+      setDrivingCapacity(userData?.driving_capacity);
     }
     setIsLoaded(true);
   };
@@ -118,6 +137,38 @@ function Profile() {
             id="graduation-year"
             value={graduationYear}
             onChange={(e) => setGraduationYear(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="field">
+          <p>Driving Capacity</p>
+          <input
+            readOnly
+            type="text"
+            id="driving-capacity"
+            value={drivingCapacity}
+            onChange={(e) => setDrivingCapacity(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <p>Student Driver</p>
+          <input
+            readOnly
+            type="text"
+            id="driving-capacity"
+            value={toTitleCase(studentDriver)}
+            onChange={(e) => setStudentDriver(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <p>Day/Boarder</p>
+          <input
+            readOnly
+            type="text"
+            id="home-status"
+            value={toTitleCase(homeStatus)}
+            onChange={(e) => setHomeStatus(e.target.value)}
           />
         </div>
       </div>

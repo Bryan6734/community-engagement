@@ -111,7 +111,7 @@ function InnerModal({ selectedEvent }) {
 
         <div className="flex-bottom">
           {Object.values(event?.volunteers).includes(
-            auth.currentUser.uid.toString()
+            auth?.currentUser?.uid.toString()
           ) ? (
             <button
               className="sign-up-event disabled"

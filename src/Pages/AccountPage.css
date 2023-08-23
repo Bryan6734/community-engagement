@@ -2,12 +2,13 @@
   overflow-y: scroll;
 }
 
-input {
+input, .row .field select {
   width: 100%;
-  height: 60px;
+  min-height: 55px;
+  height: 100%;
   border: 1px solid #ccc;
   border-radius: 2px;
-  padding: 0 20px;
+  padding: 10px 20px;
   font-size: clamp(1rem, 4vw, 1.5rem);
   outline: none;
   box-shadow: var(--secondary-box-shadow);
@@ -17,6 +18,13 @@ input {
   display: flex;
   flex-direction: row;
   gap: 20px;
+}
+
+.row-persist {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
 }
 
 .sign-in-submit {
@@ -98,3 +106,4 @@ form,
     grid-template-rows: auto auto auto;
   }
 }
+

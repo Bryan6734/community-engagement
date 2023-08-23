@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./CalendarPage.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import Modal from "react-modal";
@@ -46,6 +46,8 @@ function CalendarPage() {
     setSelectedPartnerSite(data[0]);
   };
 
+
+
   const getEventsBySiteId = async (siteId) => {
     if (siteId === undefined) {
       return;
@@ -66,12 +68,24 @@ function CalendarPage() {
       event.end = event.end_time.toDate();
       event.final_date = event.final_date.toDate();
 
+      // calculate number of weeks between start and end date
       let weeks = Math.floor(
         (event.final_date.getTime() - event.start.getTime()) /
           (7 * 24 * 60 * 60 * 1000)
       );
 
-      for (let week = 0; week < weeks; week++) {
+      let weekIncrement = 1;
+
+      if (event?.recurrence === "weekly") {
+        weekIncrement = 1;
+      } else if (event?.recurrence === "biweekly" || event?.recurrence === "bi-weekly") {
+        weekIncrement = 2;
+      } else if (event?.recurrence === "one-time") {
+        recurringEvents.push(event);
+        return;
+      }
+
+      for (let week = 0; week < weeks; week += weekIncrement) {
         let new_event = JSON.parse(JSON.stringify(event));
 
         new_event.start = moment(event.start_time.toDate())

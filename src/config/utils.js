@@ -1,5 +1,10 @@
 import { auth, db } from "../config/firebase";
-import { getDoc, updateDoc, doc, collection } from "firebase/firestore";
+import { getDoc, getDocs, updateDoc, doc, collection, where, query } from "firebase/firestore";
+import moment from "moment";
+import { momentLocalizer } from "react-big-calendar";
+
+const localizer = momentLocalizer(moment);
+
 
 export const addUserToEvent = async (eventId) => {
   if (!auth.currentUser) {
@@ -38,12 +43,6 @@ export const addUserToEvent = async (eventId) => {
     });
 
     return updateResult;
-
-    // volunteers[auth.currentUser.displayName.toString()] = userId;
-    // const updateResult = await updateDoc(eventRef, {
-    //   volunteers: volunteers,
-    // });
-
-    // return updateResult;
   }
 };
+
