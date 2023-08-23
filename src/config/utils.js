@@ -1,15 +1,5 @@
-import { signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
-import { auth, googleProvider, db, storage } from "../config/firebase";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { auth, db } from "../config/firebase";
+import { getDoc, updateDoc, doc, collection } from "firebase/firestore";
 
 export const addUserToEvent = async (eventId) => {
   if (!auth.currentUser) {
@@ -34,11 +24,26 @@ export const addUserToEvent = async (eventId) => {
       "This event is already full." + eventDoc.data().max_volunteers
     );
   } else {
-    volunteers[auth.currentUser.displayName.toString()] = userId;
+    const userRef = doc(collection(db, "users"), auth.currentUser?.uid);
+
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.data();
+
+    const fullName = userData.first_name + " " + userData.last_name;
+
+    volunteers[fullName] = userId;
+
     const updateResult = await updateDoc(eventRef, {
       volunteers: volunteers,
     });
 
     return updateResult;
+
+    // volunteers[auth.currentUser.displayName.toString()] = userId;
+    // const updateResult = await updateDoc(eventRef, {
+    //   volunteers: volunteers,
+    // });
+
+    // return updateResult;
   }
 };

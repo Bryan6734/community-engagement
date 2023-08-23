@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  signInWithPopup,
-  signOut,
+
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, googleProvider, db, storage } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
 
 function SignUpForm( { isSigningIn, setIsSigningIn }) {
@@ -64,6 +63,8 @@ function SignUpForm( { isSigningIn, setIsSigningIn }) {
       volunteer_history: [],
     };
     await setDoc(userRef, userData);
+
+    localStorage.setItem("user", JSON.stringify(userData))
     
     // clear the form inputs
     setFirstName("");

@@ -4,18 +4,9 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import Modal from "react-modal";
 import EventManager from "../Components/EventManager";
 import moment from "moment";
-import {
-  getDocs,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-  query,
-  where,
-} from "firebase/firestore";
+import { getDocs, doc, query, where } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 import { db } from "../config/firebase";
-import Footer from "../Components/Footer";
 import InnerModal from "../Components/InnerModal";
 import Loading from "../Components/Loading";
 
@@ -52,7 +43,7 @@ function CalendarPage() {
 
     setPartnerSites(data);
     setSelectedPartnerSiteId(data[0]?.id.toString());
-    setSelectedPartnerSite(data[0])
+    setSelectedPartnerSite(data[0]);
   };
 
   const getEventsBySiteId = async (siteId) => {
@@ -79,7 +70,6 @@ function CalendarPage() {
         (event.final_date.getTime() - event.start.getTime()) /
           (7 * 24 * 60 * 60 * 1000)
       );
-
 
       for (let week = 0; week < weeks; week++) {
         let new_event = JSON.parse(JSON.stringify(event));
@@ -109,7 +99,9 @@ function CalendarPage() {
   const handleOptionChange = (e) => {
     setIsLoaded(false);
     setSelectedPartnerSiteId(e.target.value);
-    setSelectedPartnerSite(partnerSites.find((site) => site.id.toString() === e.target.value))
+    setSelectedPartnerSite(
+      partnerSites.find((site) => site.id.toString() === e.target.value)
+    );
     getEventsBySiteId(e.target.value);
   };
 
@@ -138,7 +130,6 @@ function CalendarPage() {
                   </option>
                 );
               })}
-             
             </select>
           </div>
 
@@ -152,22 +143,27 @@ function CalendarPage() {
           overlayClassName="overlay"
           className="modal"
         >
-          <InnerModal selectedEvent={selectedEvent} partnerSite={selectedPartnerSite} />
+          <InnerModal
+            selectedEvent={selectedEvent}
+            partnerSite={selectedPartnerSite}
+          />
         </Modal>
 
         <div className="block">
-          <div className="calendar">
-            {isLoaded ? null : <Loading />}
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              min={moment().hour(8).minute(0).toDate()}
-              max={moment().hour(19).minute(0).toDate()}
-              defaultView="week"
-              onSelectEvent={handleEventClick}
-            />
+          <div className="calendar-scroll-container">
+            <div className="calendar">
+              {isLoaded ? null : <Loading />}
+              <Calendar
+                localizer={localizer}
+                events={events}
+                startAccessor="start"
+                endAccessor="end"
+                min={moment().hour(8).minute(0).toDate()}
+                max={moment().hour(19).minute(0).toDate()}
+                defaultView="week"
+                onSelectEvent={handleEventClick}
+              />
+            </div>
           </div>
         </div>
 
@@ -181,7 +177,6 @@ function CalendarPage() {
               <p>{selectedEvent.end.toLocaleString()}</p>
               <p>{selectedEvent.description}</p>
               <p>{selectedEvent.location}</p>
-              {/* <p>{selectedEvent.volunteers}</p> */}
               <p>{selectedEvent.maxVolunteers}</p>
             </>
           )}

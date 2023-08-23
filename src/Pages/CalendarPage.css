@@ -6,13 +6,20 @@
   flex-direction: column;
 }
 
+
+.calendar-scroll-container {
+  overflow-x: scroll;
+}
+
 .calendar {
   height: 100vh;
+  /* width: 100vw; */
   width: 100%;
+  min-width: 800px;
   position: relative;
 }
 
-select {
+select, textarea {
   appearance: none;
   background-color: transparent;
   border: none;
@@ -58,14 +65,22 @@ select::after {
   /* background-color: white !important; */
 }
 
+.rbc-day-slot .rbc-event-content {
+  min-height: 0 !important;
+}
+
 .rbc-event-label {
   font-size: 0.6rem !important;
 }
 
-.rbc-event {
+.rbc-agenda-table tr:hover {
+  background-color: rgba(197, 197, 197, 0.216);
+}
 
+.rbc-event {
   font-size: 0.9rem;
   text-align: left;
+  overflow-y: scroll;
 
   transition: 0.3s cubic-bezier(0.19, 1, 0.19, 1) all;
 }
@@ -81,3 +96,25 @@ select::after {
   overflow: scroll;
 }
 
+@media (max-width: 800px) {
+  .calendar-scroll-container {
+    width: calc(100% + 10vw);
+  }
+
+  .CalendarPage .calendar {
+    padding-right: 10vw;
+  }
+
+  .CalendarPage .rbc-toolbar {
+    /* flex-direction: column;
+    gap: 5px;
+    justify-content: left;
+    align-items: left; */
+    gap: 5px;
+    justify-content: flex-start;
+  }
+
+  .rbc-toolbar-label {
+    display: none;
+  }
+}

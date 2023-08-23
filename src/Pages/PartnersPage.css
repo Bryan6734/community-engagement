@@ -10,11 +10,14 @@
   gap: 20px;
   width: 100%;
   min-height: 300px;
+  max-height: 400px;
 }
 
 .selected-partner-info {
   width: 60%;
   padding: 10px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .partner-sites-header {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, googleProvider, db, storage } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { signOut } from "firebase/auth";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import Loading from "./Loading";
 
 function Profile() {
@@ -16,12 +16,7 @@ function Profile() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [graduationYear, setGraduationYear] = useState("");
 
-  const fetchUser = async () => {
-    if (!auth.currentUser?.uid || auth.currentUser?.uid === undefined) {
-      console.log("id is undefined");
-      return;
-    }
-
+  const fetchFirebaseUser = async () => {
     const userRef = doc(db, "users", auth.currentUser?.uid);
     const userDoc = await getDoc(userRef);
 
@@ -33,20 +28,37 @@ function Profile() {
       setEmail(userData.email);
       setPhoneNumber(userData.phone_number);
       setGraduationYear(userData.graduation_year);
+
+      localStorage.setItem("user", JSON.stringify(userData));
       setIsLoaded(true);
     } else {
       console.log("User not found");
     }
   };
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
+  const fetchLocalStorageUser = () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setUser(user);
+      setFirstName(userData.first_name);
+      setLastName(userData.last_name);
+      setEmail(userData.email);
+      setPhoneNumber(userData.phone_number);
+      setGraduationYear(userData.graduation_year);
+    }
+    setIsLoaded(true);
+  };
 
-    fetchUser();
+  useEffect(() => {
+    console.log("profile mounted");
+    auth.onAuthStateChanged((user) => {
+      if (user && localStorage.getItem("user") === null) {
+        setUser(user);
+        fetchFirebaseUser();
+      } else {
+        fetchLocalStorageUser();
+      }
+    }, []);
   }, []);
 
   return (

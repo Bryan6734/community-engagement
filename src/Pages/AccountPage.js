@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, googleProvider, db, storage } from "../config/firebase";
+import { auth, } from "../config/firebase";
 import "./AccountPage.css";
 import SignUpForm from "../Components/SignUpForm";
 import SignInForm from "../Components/SignInForm";
@@ -35,6 +34,10 @@ function AccountPage() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+      }
+
+      if (localStorage.getItem("user") && !user) {
+        localStorage.removeItem("user");
       }
     });
   }, [user]);
