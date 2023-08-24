@@ -1,108 +1,256 @@
 import React, { useState, useEffect } from "react";
-import { addUserToEvent } from "../config/utils";
+import { useNavigate } from "react-router-dom";
 import "./InnerModal.css";
+import { collection, doc, addDoc } from "firebase/firestore";
+import { db } from "../config/firebase";
 import { auth } from "../config/firebase";
+import { removeUserFromEvent } from "../config/utils";
 
-import { ReactComponent as CalendarIcon } from "../Assets/calendar-lines-svgrepo-com.svg";
-import { ReactComponent as ClockIcon } from "../Assets/clock-two-svgrepo-com.svg";
-import { ReactComponent as UserIcon } from "../Assets/user-plus-svgrepo-com.svg";
+function InnerEditModal({ selectedEvent, partnerSite }) {
+  const formatDate = (date) => {
+    const dateObj = new Date(date);
+    const hours = dateObj.getHours().toString().padStart(2, "0");
+    const minutes = dateObj.getMinutes().toString().padStart(2, "0");
+    const timeString = `${hours}:${minutes}`;
 
-function InnerEditModal({ selectedEvent }) {
-  const [calendarEvent, setCalendarEvent] = useState(selectedEvent);
+    return timeString;
+  };
 
-const formatDate = (date) => {
-    const options = { month: "long", day: "numeric", year: "numeric" };
-    return new Date(date).toLocaleDateString("en-US", options);
+  const formatFinalDate = (date) => {
+    const dateObj = new Date(date);
+    const year = dateObj.getFullYear();
+    const june10th = new Date(`${year}-06-10`);
+    const nextJune10th =
+      june10th > dateObj ? june10th : new Date(`${year + 1}-06-10`);
+    const dateString = nextJune10th.toISOString().slice(0, 10);
+    return dateString;
   };
 
   const formatTime = (date) => {
-    const options = { hour: "numeric", minute: "numeric", hour12: true };
-    return new Date(date).toLocaleTimeString("en-US", options);
+    const dateObj = new Date(date);
+    const dateString = dateObj.toISOString().slice(0, 10);
+    return dateString;
   };
 
-  const toTitleCase = (str) => {
-    return str.replace(/\w\S*/g, (txt) => {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
+  const [eventData, setEventData] = useState({
+    title: selectedEvent?.title,
+    startTime: formatDate(selectedEvent?.start),
+    endTime: formatDate(selectedEvent?.end),
+    startDate: formatTime(selectedEvent?.start),
+    endDate: formatTime(selectedEvent?.end),
+    finalDate: formatFinalDate(selectedEvent?.start),
+    recurrence: "bi-weekly",
+    mode: "in-person",
+    maxVolunteers: 10,
+    description: selectedEvent?.description,
+    volunteers: selectedEvent?.volunteers,
+  });
+
+  const handleStartTimeChange = (e) => {
+    setEventData({ ...eventData, startTime: e.target.value });
   };
 
-  const handleButtonClick = async () => {
+  const handleEndTimeChange = (e) => {
+    setEventData({ ...eventData, endTime: e.target.value });
+  };
+
+  const handleStartDateChange = (e) => {
+    setEventData({ ...eventData, startDate: e.target.value });
+  };
+
+  const handleEndDateChange = (e) => {
+    setEventData({ ...eventData, endDate: e.target.value });
+  };
+
+  const handleRecurrenceChange = (e) => {
+    setEventData({ ...eventData, recurrence: e.target.value });
+  };
+
+  const handleUpdate = async () => {};
+
+  useEffect(() => {
     console.log(selectedEvent);
-
-    try {
-      await addUserToEvent(selectedEvent?.id);
-      alert("You have successfully signed up for this event! Please refresh.");
-      setCalendarEvent(selectedEvent);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {}, []);
+  }, []);
 
   return (
     <div className="InnerModal">
       <div className="header">
-        {/* <h2>{event?.title}</h2> */}
         <input
           type="text"
-          value={calendarEvent?.title}
+          name="title"
+          value={eventData.title}
           onChange={(e) => {
-            setCalendarEvent({ ...calendarEvent, title: e.target.value });
+            setEventData({ ...eventData, title: e.target.value });
           }}
         />
-        <p className="id">Event ID: {calendarEvent?.id}</p>
       </div>
       <hr className="divider" />
-
       <div className="modal-body">
         <div className="flex-top">
-          <div>
-            <label htmlFor="start-date">Start Date</label>
-            <input
-              type="date"
-              id="start-date"
-              name="start-date"
-              value={formatDate(calendarEvent?.start)}
-              onChange={(e) => {
-              }}
-            />
+          <table className="modal-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Remove</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {Object.keys(eventData?.volunteers).map((key) => {
+                return (
+                  <tr key={key}>
+                    <td>{key}</td>
+                    <td>123-456-7890</td>
+                    <td
+                      onClick={() => {
+                        removeUserFromEvent(
+                          eventData?.volunteers[key],
+                          selectedEvent?.id,
+                        );
+                        console.log("Remove user from event");
+                      }}
+                    ></td>
+                    <td></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <label htmlFor="">
+            Volunteers ({Object.keys(eventData?.volunteers).length}/
+            {eventData?.maxVolunteers})
+          </label>
+
+          <div className="row">
+            <div>
+              <label htmlFor="">Start Time</label>
+              <input
+                type="time"
+                name="startTime"
+                value={eventData.startTime}
+                onChange={handleStartTimeChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="">End Time</label>
+              <input
+                type="time"
+                name="endTime"
+                value={eventData.endTime}
+                onChange={handleEndTimeChange}
+              />
+            </div>
           </div>
 
+          <div className="row">
+            <div>
+              <label htmlFor="">Date</label>
+              <input
+                name="startDate"
+                type="date"
+                value={eventData.startDate}
+                onChange={handleStartDateChange}
+              />
+            </div>
 
-
-          {/* <div className="tag-row emphasis">
-            <CalendarIcon className="calendar-icon" />
-            {formatDate(calendarEvent?.start)} - {formatDate(calendarEvent?.final_date)}
+            <div>
+              <label htmlFor="">(Optional) Spans until</label>
+              <input
+                name="endDate"
+                type="date"
+                value={eventData.endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div>
+              <label htmlFor="">
+                Event will recur {eventData.recurrence} until:
+              </label>
+              <input
+                type="date"
+                name="finalDate"
+                value={eventData.finalDate}
+                onChange={(e) => {
+                  setEventData({ ...eventData, finalDate: e.target.value });
+                }}
+              />
+            </div>
           </div>
 
-          <div className="tag-row emphasis">
-            <ClockIcon className="clock-icon" />
-            {toTitleCase(calendarEvent?.recurrence)} from {formatTime(calendarEvent?.start)} to{" "}
-            {formatTime(calendarEvent?.end)}
-          </div> */}
+          <div className="row">
+            <div>
+              <label htmlFor="">Max Volunteers</label>
+              <input
+                type="number"
+                name="maxVolunteers"
+                value={eventData.maxVolunteers}
+                onChange={(e) => {
+                  setEventData({
+                    ...eventData,
+                    maxVolunteers: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div>
+              <label htmlFor="">Recurrence</label>
+              <select
+                onChange={handleRecurrenceChange}
+                value={eventData.recurrence}
+                name="recurrence"
+              >
+                <option value="weekly">Weekly</option>
+                <option value="bi-weekly">Bi-weekly</option>
+                <option value="one-time">One-Time</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="">Mode</label>
+              <select
+                onChange={(e) =>
+                  setEventData({ ...eventData, mode: e.target.value })
+                }
+                name="mode"
+              >
+                <option value="in-person">In-Person</option>
+                <option value="remote">Remote</option>
+              </select>
+            </div>
+          </div>
 
-          {/* <div className="tag-row emphasis">
-            <UserIcon className="user-icon" />
-            {event?.max_volunteers - Object.keys(event?.volunteers).length}{" "}
-            slots remaining
-          </div> */}
-
-          {/* <p>{event?.description}</p> */}
-
-          <p>{calendarEvent?.location}</p>
+          <div className="row">
+            <div>
+              <label htmlFor="input-desc">Description</label>
+              <div>
+                <textarea
+                  className="input-desc"
+                  type="text"
+                  name="description"
+                  id=""
+                  value={eventData.description}
+                  onChange={(e) =>
+                    setEventData({
+                      ...eventData,
+                      description: e.target.value,
+                    })
+                  }
+                ></textarea>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex-bottom">
-          <button className="sign-up-event" onClick={handleButtonClick}>
-            Update
-          </button>
-          <button className="sign-up-event" onClick={handleButtonClick}>
-            Delete
+          <button className="sign-up-event" onClick={handleUpdate}>
+            Create Event
           </button>
         </div>
       </div>
-
     </div>
   );
 }

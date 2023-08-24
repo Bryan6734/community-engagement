@@ -2,13 +2,14 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./CalendarPage.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import Modal from "react-modal";
-import EventManager from "../Components/EventManager";
+
 import moment from "moment";
 import { getDocs, doc, query, where } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 import InnerModal from "../Components/InnerModal";
 import Loading from "../Components/Loading";
+
 
 Modal.setAppElement("#root");
 
@@ -24,6 +25,8 @@ function CalendarPage() {
 
   const [isLoaded, setIsLoaded] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [sliderValue, setSliderValue] = useState(1);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -46,8 +49,6 @@ function CalendarPage() {
     setSelectedPartnerSite(data[0]);
   };
 
-
-
   const getEventsBySiteId = async (siteId) => {
     if (siteId === undefined) {
       return;
@@ -65,6 +66,7 @@ function CalendarPage() {
       let event = doc.data();
       event.id = doc.id;
       event.start = event.start_time.toDate();
+      event.first_start = event.start_time.toDate();
       event.end = event.end_time.toDate();
       event.final_date = event.final_date.toDate();
 
@@ -78,7 +80,10 @@ function CalendarPage() {
 
       if (event?.recurrence === "weekly") {
         weekIncrement = 1;
-      } else if (event?.recurrence === "biweekly" || event?.recurrence === "bi-weekly") {
+      } else if (
+        event?.recurrence === "biweekly" ||
+        event?.recurrence === "bi-weekly"
+      ) {
         weekIncrement = 2;
       } else if (event?.recurrence === "one-time") {
         recurringEvents.push(event);
@@ -130,24 +135,57 @@ function CalendarPage() {
         <div className="block">
           <hr />
           <h1>Calendar</h1>
-
-          <div>
-            <select
-              onChange={handleOptionChange}
-              defaultValue="Select a partner site"
-            >
-              <option disabled>Select a partner site</option>
-              {partnerSites.map((partner) => {
-                return (
-                  <option key={partner.id} value={partner.id}>
-                    {partner.title}
-                  </option>
-                );
-              })}
-            </select>
+          <div className="calendar-intro">
+            <p>
+              Welcome to the CEPP Volunteer Calendar! Here, we post all
+              volunteer listings for each of our partner sites. To sign up,
+              please log in, select a partner site, choose a volunteer slot
+              based off your schedule.
+            </p>
+            <p>
+              <span className="bold">IMPORTANT NOTE:</span> Each listing meets
+              at a different frequency (weekly, biweekly, one-time, etc). By
+              signing up, you are committing to ALL of these dates. Please make
+              sure to <span className="bold">double check</span> before you sign
+              up!
+            </p>
           </div>
 
-          <div className="block">{/* <EventManager /> */}</div>
+          <div className="buttons-row">
+            <div>
+              <select
+                onChange={handleOptionChange}
+                defaultValue="Select a partner site"
+              >
+                <option disabled>Select a partner site</option>
+                {partnerSites.map((partner) => {
+                  return (
+                    <option key={partner.id} value={partner.id}>
+                      {partner.title}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            <div className="slider">
+              <label htmlFor="">Adjust Zoom</label>
+              <input
+                type="range"
+                min="0.5"
+                max="1"
+                step="0.1"
+                value={sliderValue}
+                onChange={(e) => {
+                  setSliderValue(e.target.value);
+                  let calendar = document.querySelector(
+                    ".CalendarPage .calendar"
+                  );
+                  calendar.style.transform = `scale(${e.target.value})`;
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <Modal
@@ -179,27 +217,6 @@ function CalendarPage() {
               />
             </div>
           </div>
-        </div>
-
-        <div className="block">
-          <h2 ref={signupRef}>This Week</h2>
-
-          {selectedEvent && (
-            <>
-              <p>{selectedEvent.title}</p>
-              <p>{selectedEvent.start.toLocaleString()}</p>
-              <p>{selectedEvent.end.toLocaleString()}</p>
-              <p>{selectedEvent.description}</p>
-              <p>{selectedEvent.location}</p>
-              <p>{selectedEvent.maxVolunteers}</p>
-            </>
-          )}
-
-          <div className="dropdowns"></div>
-        </div>
-
-        <div className="block">
-          <EventManager />
         </div>
       </div>
     </div>

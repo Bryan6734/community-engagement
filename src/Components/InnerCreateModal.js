@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import "./InnerModal.css";
 import { collection, doc, addDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-function InnerCreateModal({
-  trigger,
-  getEventsBySiteId,
-  selectedSlot,
-  partnerSite,
-}) {
-
+function InnerCreateModal({ selectedSlot, partnerSite }) {
   const navigate = useNavigate();
 
   const formatDate = (date) => {
-    const options = { hour: "numeric", minute: "numeric", hour12: true };
-
     const dateObj = new Date(date);
     const hours = dateObj.getHours().toString().padStart(2, "0");
     const minutes = dateObj.getMinutes().toString().padStart(2, "0");
@@ -41,76 +33,70 @@ function InnerCreateModal({
     return dateString;
   };
 
-  const [title, setTitle] = useState(partnerSite?.title);
-
-  const [startTime, setStartTime] = useState(formatDate(selectedSlot?.start));
-  const [endTime, setEndTime] = useState(formatDate(selectedSlot?.end));
-
-  const [startDate, setStartDate] = useState(formatTime(selectedSlot?.start));
-  const [endDate, setEndDate] = useState(formatTime(selectedSlot?.end));
-
-  const [finalDate, setFinalDate] = useState(
-    formatFinalDate(selectedSlot?.start)
-  );
-
-  const [recurrence, setRecurrence] = useState("bi-weekly");
-  const [mode, setMode] = useState("in-person");
-  const [maxVolunteers, setMaxVolunteers] = useState(10);
-  const [description, setDescription] = useState(partnerSite?.description);
+  const [eventData, setEventData] = useState({
+    title: partnerSite?.title,
+    startTime: formatDate(selectedSlot?.start),
+    endTime: formatDate(selectedSlot?.end),
+    startDate: formatTime(selectedSlot?.start),
+    endDate: formatTime(selectedSlot?.end),
+    finalDate: formatFinalDate(selectedSlot?.start),
+    recurrence: "bi-weekly",
+    mode: "in-person",
+    maxVolunteers: 10,
+    description: partnerSite?.description,
+  });
 
   const handleStartTimeChange = (e) => {
-    setStartTime(e.target.value);
+    setEventData({ ...eventData, startTime: e.target.value });
   };
 
   const handleEndTimeChange = (e) => {
-    setEndTime(e.target.value);
+    setEventData({ ...eventData, endTime: e.target.value });
   };
 
   const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
+    setEventData({ ...eventData, startDate: e.target.value });
   };
 
   const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
+    setEventData({ ...eventData, endDate: e.target.value });
   };
 
   const handleRecurrenceChange = (e) => {
-    setRecurrence(e.target.value);
+    setEventData({ ...eventData, recurrence: e.target.value });
   };
 
   const handleSubmit = async () => {
     // make sure all fields are filled out
     if (
-      !title ||
-      !startTime ||
-      !endTime ||
-      !startDate ||
-      !endDate ||
-      !finalDate ||
-      !recurrence ||
-      !mode ||
-      !maxVolunteers ||
-      !description
+      !eventData.title ||
+      !eventData.startTime ||
+      !eventData.endTime ||
+      !eventData.startDate ||
+      !eventData.endDate ||
+      !eventData.finalDate ||
+      !eventData.recurrence ||
+      !eventData.mode ||
+      !eventData.maxVolunteers ||
+      !eventData.description
     ) {
       alert("Please fill out all fields");
       return;
     }
 
     const newEvent = {
-      title: title,
-      start_time: new Date(startDate + " " + startTime),
-      end_time: new Date(endDate + " " + endTime),
-      final_date: new Date(finalDate),
-      recurrence: recurrence,
-      mode: mode,
-      max_volunteers: maxVolunteers,
-      description: description,
+      title: eventData.title,
+      start_time: new Date(eventData.startDate + " " + eventData.startTime),
+      end_time: new Date(eventData.endDate + " " + eventData.endTime),
+      final_date: new Date(eventData.finalDate),
+      recurrence: eventData.recurrence,
+      mode: eventData.mode,
+      max_volunteers: eventData.maxVolunteers,
+      description: eventData.description,
       site: partnerSite?.id,
       volunteers: {},
     };
 
-    // const partnerSiteRef = doc(db, "sites", partnerSite?.id);
-    // const partnerSiteRef = db.doc(`sites/${partnerSite?.id}`)
     const partnerSiteRef = doc(db, "sites", partnerSite?.id);
     newEvent.site = partnerSiteRef;
 
@@ -118,7 +104,7 @@ function InnerCreateModal({
       const eventsCollectionRef = collection(db, "events");
       const docRef = await addDoc(eventsCollectionRef, newEvent);
       console.log("Document written with ID.  ", docRef.id);
-      
+
       alert("Successfully posted");
       // refresh page but stay on admin page
       navigate("/admin", { replace: true });
@@ -135,9 +121,9 @@ function InnerCreateModal({
         <input
           type="text"
           name="title"
-          value={title}
+          value={eventData.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            setEventData({ ...eventData, title: e.target.value });
           }}
         />
       </div>
@@ -150,7 +136,7 @@ function InnerCreateModal({
               <input
                 type="time"
                 name="startTime"
-                value={startTime}
+                value={eventData.startTime}
                 onChange={handleStartTimeChange}
               />
             </div>
@@ -159,7 +145,7 @@ function InnerCreateModal({
               <input
                 type="time"
                 name="endTime"
-                value={endTime}
+                value={eventData.endTime}
                 onChange={handleEndTimeChange}
               />
             </div>
@@ -171,7 +157,7 @@ function InnerCreateModal({
               <input
                 name="startDate"
                 type="date"
-                value={startDate}
+                value={eventData.startDate}
                 onChange={handleStartDateChange}
               />
             </div>
@@ -181,20 +167,22 @@ function InnerCreateModal({
               <input
                 name="endDate"
                 type="date"
-                value={endDate}
+                value={eventData.endDate}
                 onChange={handleEndDateChange}
               />
             </div>
           </div>
           <div className="row">
             <div>
-              <label htmlFor="">Event will recur {recurrence} until:</label>
+              <label htmlFor="">
+                Event will recur {eventData.recurrence} until:
+              </label>
               <input
                 type="date"
                 name="finalDate"
-                value={finalDate}
+                value={eventData.finalDate}
                 onChange={(e) => {
-                  setFinalDate(e.target.value);
+                  setEventData({ ...eventData, finalDate: e.target.value });
                 }}
               />
             </div>
@@ -206,17 +194,17 @@ function InnerCreateModal({
               <input
                 type="number"
                 name="maxVolunteers"
-                value={maxVolunteers}
+                value={eventData.maxVolunteers}
                 onChange={(e) => {
-                  setMaxVolunteers(e.target.value);
+                  setEventData({ ...eventData, maxVolunteers: e.target.value });
                 }}
               />
             </div>
             <div>
               <label htmlFor="">Recurrence</label>
               <select
-                onChange={(e) => setRecurrence(e.target.value)}
-                value={recurrence}
+                onChange={handleRecurrenceChange}
+                value={eventData.recurrence}
                 name="recurrence"
               >
                 <option value="weekly">Weekly</option>
@@ -226,7 +214,12 @@ function InnerCreateModal({
             </div>
             <div>
               <label htmlFor="">Mode</label>
-              <select onChange={(e) => setMode(e.target.value)} name="mode">
+              <select
+                onChange={(e) =>
+                  setEventData({ ...eventData, mode: e.target.value })
+                }
+                name="mode"
+              >
                 <option value="in-person">In-Person</option>
                 <option value="remote">Remote</option>
               </select>
@@ -242,8 +235,10 @@ function InnerCreateModal({
                   type="text"
                   name="description"
                   id=""
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={eventData.description}
+                  onChange={(e) =>
+                    setEventData({ ...eventData, description: e.target.value })
+                  }
                 ></textarea>
               </div>
             </div>

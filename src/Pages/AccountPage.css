@@ -2,7 +2,8 @@
   overflow-y: scroll;
 }
 
-input, .row .field select {
+.AccountPage input,
+.row .field select {
   width: 100%;
   min-height: 55px;
   height: 100%;
@@ -24,7 +25,6 @@ input, .row .field select {
   display: flex;
   flex-direction: row;
   gap: 20px;
-
 }
 
 .sign-in-submit {
@@ -59,6 +59,16 @@ form,
   gap: 5px;
 }
 
+.Profile .profile-views {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 5px;
+}
+.Profile .profile-views button {
+  font-size: clamp(0.8rem, 3vw, 1.25rem);
+}
+
 .row div {
   flex: 1;
 }
@@ -76,7 +86,7 @@ form,
 
 .Profile .row-2 {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-columns: 2.5fr 1fr 0.5fr;
   grid-template-rows: 1fr;
 }
 
@@ -86,7 +96,6 @@ form,
 }
 
 @media (max-width: 650px) {
-
   .field input {
     height: 50px;
   }
@@ -105,5 +114,60 @@ form,
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
   }
+
+  .Profile .profile-views {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5px;
+  }
 }
+
+
+.Profile .VolunteerHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+width: 100%;
+  
+}
+
+.Profile .VolunteerHistory .VolunteerHistoryEvent {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  box-shadow: var(--primary-box-shadow);
+  height: 100%;
+  min-height: 120px;
+  border-left: 15px solid var(--primary-color);
+  border-radius: 5px;
+  justify-content: space-between;
+}
+
+.VolunteerHistoryEvent .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  box-shadow: var(--secondary-box-shadow);
+  padding: 5px;
+
+  height: 100%;
+  aspect-ratio: 1;
+}
+
+.right .num {
+  font-size: 3.5rem;
+  color: gold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: 600;
+}
+
 

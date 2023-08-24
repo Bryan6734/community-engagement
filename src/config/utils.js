@@ -1,10 +1,45 @@
 import { auth, db } from "../config/firebase";
-import { getDoc, getDocs, updateDoc, doc, collection, where, query } from "firebase/firestore";
+import {
+  getDoc,
+  getDocs,
+  updateDoc,
+  doc,
+  collection,
+  where,
+  query,
+} from "firebase/firestore";
 import moment from "moment";
 import { momentLocalizer } from "react-big-calendar";
+import { documentId } from "firebase/firestore";
 
 const localizer = momentLocalizer(moment);
 
+export const addEventToUser = async (eventId) => {
+  if (!auth.currentUser) {
+    throw new Error("You must be logged in to sign up for an event.");
+  }
+
+  const userId = auth.currentUser.uid.toString();
+
+  const userRef = doc(db, "users", userId);
+  const userDoc = await getDoc(userRef);
+  const volunteerHistory = userDoc.data().volunteer_history || [];
+
+  const volunteerHistoryEntry = {
+    event_id: eventId,
+    joined_at: new Date(),
+    left_at: null,
+    absences: 0,
+  };
+
+  volunteerHistory.push(volunteerHistoryEntry);
+
+  const updateResult = await updateDoc(userRef, {
+    volunteer_history: volunteerHistory,
+  });
+
+  return updateResult;
+};
 
 export const addUserToEvent = async (eventId) => {
   if (!auth.currentUser) {
@@ -46,3 +81,50 @@ export const addUserToEvent = async (eventId) => {
   }
 };
 
+export const removeUserFromEvent = async (userId, eventId) => {
+  try {
+    const eventRef = doc(db, "events", eventId);
+    const eventDoc = await getDoc(eventRef);
+    const volunteers = eventDoc.data().volunteers || {};
+
+    const newVolunteers = {};
+
+    Object.keys(volunteers).forEach((key) => {
+      const volunteerId = volunteers[key];
+      if (volunteerId !== userId) {
+        newVolunteers[key] = volunteerId;
+      } else {
+        console.log("removed user in loop");
+      }
+    });
+
+    const updateResult = await updateDoc(eventRef, {
+      volunteers: newVolunteers,
+    });
+  } catch (error) {
+    alert("Failed to update event. Please try again.");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userRef);
+    const volunteerHistory = userDoc.data().volunteer_history || [];
+
+    const newVolunteerHistory = volunteerHistory.map((entry) => {
+      if (entry.event_id === eventId) {
+        entry.left_at = new Date();
+      }
+      return entry;
+    });
+
+    const updateResult = await updateDoc(userRef, {
+      volunteer_history: newVolunteerHistory,
+    });
+  } catch (error) {
+    console.log(error);
+    alert(
+      "Failed to update user."
+    );
+  }
+};

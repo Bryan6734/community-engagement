@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .sign-up-event {
@@ -42,7 +42,7 @@
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   /* letter-spacing: 0.01rem; */
   /* color: var(--primary-color); */
   text-align: left;
@@ -57,15 +57,38 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  gap: 15px;
+  /* gap: 15px; */
 }
 
 .InnerModal .modal-body .flex-top {
   overflow-y: scroll;
+  overflow-x: scroll;
   display: flex;
   flex-direction: column;
   padding: 5px;
   gap: 10px;
+  /* always show scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+
+  background: linear-gradient(
+    to bottom var(--primary-color) 0%,
+    transparent 100%
+  );
+}
+
+.flex-top::-webkit-scrollbar {
+  width: 5px;
+}
+
+.flex-top::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.flex-top::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border: transparent;
 }
 
 .InnerModal .modal-body .flex-bottom {
@@ -148,4 +171,23 @@
   white-space: pre-line;
   vertical-align: text-top !important;
   resize: none;
+}
+
+.InnerModal .modal-table {
+  height: 100%;
+  margin-left: 0;
+  text-align: left;
+  white-space: no-wrap;
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow-x: scroll;
+  width: 100%;
+
+}
+
+.InnerModal .modal-table td,
+.InnerModal .modal-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  overflow-x: scroll;
 }

@@ -6,7 +6,6 @@
   flex-direction: column;
 }
 
-
 .calendar-scroll-container {
   overflow-x: scroll;
 }
@@ -19,7 +18,8 @@
   position: relative;
 }
 
-select, textarea {
+select,
+textarea {
   appearance: none;
   background-color: transparent;
   border: none;
@@ -85,6 +85,10 @@ select::after {
   transition: 0.3s cubic-bezier(0.19, 1, 0.19, 1) all;
 }
 
+.CalendarPage .calendar {
+  transform-origin: top left;
+}
+
 .rbc-event-content {
   white-space: pre-line !important;
   overflow: hidden !important;
@@ -92,24 +96,31 @@ select::after {
   word-wrap: normal !important;
 }
 
+.CalendarPage .buttons-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+
 .rbc-event-content:hover {
   overflow: scroll;
 }
 
-@media (max-width: 800px) {
-  .calendar-scroll-container {
-    width: calc(100% + 10vw);
-  }
-
-  .CalendarPage .calendar {
-    padding-right: 10vw;
-  }
-
+@media (max-width: 1000px) {
+ 
   .CalendarPage .rbc-toolbar {
-    /* flex-direction: column;
-    gap: 5px;
-    justify-content: left;
-    align-items: left; */
     gap: 5px;
     justify-content: flex-start;
   }
@@ -117,4 +128,50 @@ select::after {
   .rbc-toolbar-label {
     display: none;
   }
+}
+
+.CalendarPage .calendar-note {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.CalendarPage .lightbulb-icon {
+  width: 30px;
+  height: 30px;
+}
+.CalendarPage .emphasis {
+  background-color: var(--tertiary-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  /* color: var(--primary-color); */
+  color: black;
+
+  border: none;
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+}
+.CalendarPage .bold {
+  font-weight: 900;
+  color: black;
+}
+
+.calendar-intro {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.CalendarPage ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.CalendarPage ul li {
+  padding: 4px 0;
+  font-size: 1.15rem;
 }

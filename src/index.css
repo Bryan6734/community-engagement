@@ -14,6 +14,11 @@
 
 }
 
+html {
+  overflow-y: hidden;
+  height: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -25,6 +30,7 @@ button, input, select {
 }
 
 body {
+  height: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
 }
@@ -108,6 +114,17 @@ ul {
   border-radius: 5px;
   box-shadow: var(--primary-box-shadow);
 }
+.admin-modal input {
+  width: 100%;
+  min-height: 55px;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 10px 20px;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  outline: none;
+  box-shadow: var(--secondary-box-shadow);
+}
 .admin-modal {
   background: white;
   max-width: 80vw;
@@ -150,6 +167,12 @@ ul {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .block {
+    padding: 0 5vw;
   }
 }
 
