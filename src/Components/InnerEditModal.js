@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./InnerModal.css";
-import { collection, doc, addDoc } from "firebase/firestore";
+import { collection, doc, addDoc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { auth } from "../config/firebase";
 import { removeUserFromEvent } from "../config/utils";
@@ -66,7 +66,34 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
     setEventData({ ...eventData, recurrence: e.target.value });
   };
 
-  const handleUpdate = async () => {};
+  const handleUpdate = async () => {
+    // override the doc with a new doc
+    try {
+      const docRef = doc(db, "events", selectedEvent?.id);
+
+      // create a reference to the partnerSite
+      const partnerSiteRef = doc(db, "sites", partnerSite?.id);
+
+
+      await setDoc(docRef, {
+        title: eventData.title,
+        start_time: new Date(`${eventData.startDate} ${eventData.startTime}`),
+        end_time: new Date(`${eventData.endDate} ${eventData.endTime}`),
+        description: eventData.description,
+        max_volunteers: eventData.maxVolunteers,
+        recurrence: eventData.recurrence,
+        mode: eventData.mode,
+        final_date: new Date(eventData.finalDate),
+        volunteers: eventData.volunteers,
+        site: partnerSiteRef,
+      });
+
+      alert("Event updated successfully!");
+
+    } catch (error) {
+      alert("Error updating event.");
+    }
+  };
 
   useEffect(() => {
     console.log(selectedEvent);
@@ -107,7 +134,7 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
                       onClick={() => {
                         removeUserFromEvent(
                           eventData?.volunteers[key],
-                          selectedEvent?.id,
+                          selectedEvent?.id
                         );
                         console.log("Remove user from event");
                       }}
@@ -247,7 +274,7 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
 
         <div className="flex-bottom">
           <button className="sign-up-event" onClick={handleUpdate}>
-            Create Event
+            Update Event
           </button>
         </div>
       </div>

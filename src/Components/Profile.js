@@ -25,7 +25,7 @@ function Profile() {
   const [graduationYear, setGraduationYear] = useState("");
   const [homeStatus, setHomeStatus] = useState("");
   const [studentDriver, setStudentDriver] = useState("");
-  const [drivingCapacity, setDrivingCapacity] = useState("");
+  const [driverCapacity, setDriverCapacity] = useState("");
   const [volunteerHistory, setVolunteerHistory] = useState([]);
   const [currentView, setCurrentView] = useState("Account Information");
 
@@ -53,12 +53,16 @@ function Profile() {
       setGraduationYear(userData?.graduation_year);
       setHomeStatus(userData?.home_status);
       setStudentDriver(userData?.student_driver);
-      setDrivingCapacity(userData?.driving_capacity);//docs.google.com/spreadsheets/d/15nJV-2AO6Yr_xx778B5Y2L55xolB-EDVfPG-Da42TyQ/edit?usp=sharingusere
+      setDriverCapacity(userData?.driver_capacity?.toString());
+
+            
+      //docs.google.com/spreadsheets/d/15nJV-2AO6Yr_xx778B5Y2L55xolB-EDVfPG-Da42TyQ/edit?usp=sharingusere
 
       localStorage.setItem("user", JSON.stringify(userData));
       setIsLoaded(true);
     } else {
       console.log("User not found");
+      localStorage.removeItem("user");
     }
   };
 
@@ -73,7 +77,7 @@ function Profile() {
       setGraduationYear(userData?.graduation_year);
       setHomeStatus(userData?.home_status);
       setStudentDriver(userData?.student_driver);
-      setDrivingCapacity(userData?.driving_capacity);
+      setDriverCapacity(userData?.driver_capacity);
     }
     setIsLoaded(true);
   };
@@ -202,6 +206,12 @@ function Profile() {
     }, []);
   }, []);
 
+  useEffect(() => {
+    console.log(driverCapacity)
+
+
+  }, [])
+
   const AccountInformation = () => {
     return (
       <>
@@ -269,8 +279,10 @@ function Profile() {
               readOnly
               type="text"
               id="driving-capacity"
-              value={drivingCapacity}
-              onChange={(e) => setDrivingCapacity(e.target.value)}
+              value={driverCapacity}
+              onChange={(e) => {
+                setDriverCapacity(e.target.value);
+              }}
             />
           </div>
           <div className="field">
