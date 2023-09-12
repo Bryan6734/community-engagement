@@ -21,7 +21,9 @@ function SearchBar({ placeholder, data }) {
   const navigate = useNavigate();
 
   const handleChange = async (e) => {
-    setUserQuery(e.target.value);
+
+    
+
 
     if (e.target.value === "") {
       setResults([]);

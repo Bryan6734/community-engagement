@@ -67,11 +67,11 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
   };
 
   const handleUpdate = async () => {
-    // override the doc with a new doc
+
     try {
       const docRef = doc(db, "events", selectedEvent?.id);
 
-      // create a reference to the partnerSite
+
       const partnerSiteRef = doc(db, "sites", partnerSite?.id);
 
 

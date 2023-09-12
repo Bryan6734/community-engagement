@@ -67,7 +67,8 @@ function InnerCreateModal({ selectedSlot, partnerSite }) {
   };
 
   const handleSubmit = async () => {
-    // make sure all fields are filled out
+
+    
     if (
       !eventData.title ||
       !eventData.startTime ||

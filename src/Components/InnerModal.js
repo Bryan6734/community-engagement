@@ -55,8 +55,7 @@ function InnerModal({ selectedEvent }) {
             <CalendarIcon className="calendar-icon" />
             {new Date() < new Date(event?.first_start)
               ? "Begins on " + formatDate(event?.first_start)
-              : "Began on " + formatDate(event?.first_start)
-              }
+              : "Began on " + formatDate(event?.first_start)}
           </div>
 
           <div className="tag-row emphasis">
@@ -94,28 +93,14 @@ function InnerModal({ selectedEvent }) {
           )}
 
           <p className="note">
-            NOTE: By signing up, you are making a
-            {" " + event?.recurrence.toUpperCase() + " "}
-            commitment to volunteer here. Please double-check your schedule
-            before signing up.
+            This is a
+            <span className="bold">
+              {" " + event?.recurrence.toUpperCase() + " "}
+            </span>
+            commitment. Please double-check your schedule before signing up.
           </p>
         </div>
       </div>
-
-      {/* <ul>
-        <p>Current Volunteers:</p>
-        {Object.keys(event?.volunteers).map((volunteer) => {
-          return (
-            <li key={volunteer}>
-              <span>{volunteer}</span>
-            </li>
-          );
-        })}
-      </ul>
-
-      <button className="sign-up-event" onClick={handleButtonClick}>
-        Volunteer
-      </button> */}
     </div>
   );
 }
