@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import "../../Pages/CalendarPage.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -29,7 +29,7 @@ function EventAdminModule() {
 
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
 
-  const [trigger, setTrigger] = useState(false);
+
 
   const getPartnerSites = async () => {
     const sitesRef = collection(db, "sites");
@@ -109,7 +109,7 @@ function EventAdminModule() {
 
   useEffect(() => {
     getEventsBySiteId();
-  }, [selectedPartnerSiteId, trigger]);
+  }, [selectedPartnerSiteId]);
 
   const handleOptionChange = (e) => {
     setIsLoaded(false);

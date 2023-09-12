@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../config/firebase";
-import { collection } from "firebase/firestore";
+import { auth } from "../config/firebase";
 import "./HomePage.css";
 import Typed from "typed.js";
 

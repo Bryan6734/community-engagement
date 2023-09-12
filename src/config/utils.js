@@ -1,18 +1,5 @@
 import { auth, db } from "../config/firebase";
-import {
-  getDoc,
-  getDocs,
-  updateDoc,
-  doc,
-  collection,
-  where,
-  query,
-} from "firebase/firestore";
-import moment from "moment";
-import { momentLocalizer } from "react-big-calendar";
-import { documentId } from "firebase/firestore";
-
-const localizer = momentLocalizer(moment);
+import { getDoc, updateDoc, doc, collection } from "firebase/firestore";
 
 export const addEventToUser = async (eventId) => {
   if (!auth.currentUser) {
@@ -101,6 +88,7 @@ export const removeUserFromEvent = async (userId, eventId) => {
     const updateResult = await updateDoc(eventRef, {
       volunteers: newVolunteers,
     });
+    console.log(updateResult)
   } catch (error) {
     alert("Failed to update event. Please try again.");
     return;
@@ -121,10 +109,9 @@ export const removeUserFromEvent = async (userId, eventId) => {
     const updateResult = await updateDoc(userRef, {
       volunteer_history: newVolunteerHistory,
     });
+    console.log(updateResult)
   } catch (error) {
     console.log(error);
-    alert(
-      "Failed to update user."
-    );
+    alert("Failed to update user.");
   }
 };

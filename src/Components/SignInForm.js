@@ -17,7 +17,7 @@ function SignInForm({ isSigningIn, setIsSigningIn }) {
         email,
         password
       );
-      const user = userCredential.user;
+      console.log(userCredential?.user)
     } catch (error) {
       alert(error.message);
     }

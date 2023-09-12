@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import "./CalendarPage.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import Modal from "react-modal";
@@ -112,8 +112,6 @@ function CalendarPage() {
     getPartnerSites();
     getEventsBySiteId();
   }, [selectedPartnerSiteId]);
-
-  const signupRef = useRef(null);
 
   const handleOptionChange = (e) => {
     setIsLoaded(false);

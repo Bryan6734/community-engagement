@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import "./InnerModal.css";
-import { collection, doc, addDoc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
-import { auth } from "../config/firebase";
 import { removeUserFromEvent } from "../config/utils";
 
 function InnerEditModal({ selectedEvent, partnerSite }) {
@@ -56,7 +54,7 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
 
   const handleStartDateChange = (e) => {
     setEventData({ ...eventData, startDate: e.target.value });
-  };
+};
 
   const handleEndDateChange = (e) => {
     setEventData({ ...eventData, endDate: e.target.value });
@@ -95,9 +93,6 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
     }
   };
 
-  useEffect(() => {
-    console.log(selectedEvent);
-  }, []);
 
   return (
     <div className="InnerModal">

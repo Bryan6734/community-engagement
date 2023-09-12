@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { db, getDoc } from "../config/firebase";
-
 import "./AdminPage.css";
-import SearchBar from "../Components/SearchBar";
 import UserAdminModule from "../Components/AdminModules/UserAdminModule";
 import EventAdminModule from "../Components/AdminModules/EventAdminModule";
 import PartnerAdminModule from "../Components/AdminModules/PartnerAdminModule";
@@ -11,11 +8,11 @@ import PartnerAdminModule from "../Components/AdminModules/PartnerAdminModule";
 function AdminPage() {
   useEffect(() => {}, []);
 
-  const [module, setModule] = useState()
+  const [module, setModule] = useState();
 
   const handleModuleChange = (selectedModule) => {
-    setModule(selectedModule)
-  }
+    setModule(selectedModule);
+  };
 
   return (
     <div className="AdminPage">
@@ -37,12 +34,15 @@ function AdminPage() {
           </div>
 
           <div className="search-bar">
-            {
-              module === "users" ? <UserAdminModule /> :
-              module === "events" ? <EventAdminModule /> :
-              module === "partners" ? <PartnerAdminModule/> 
-              : <div></div>
-            }
+            {module === "users" ? (
+              <UserAdminModule />
+            ) : module === "events" ? (
+              <EventAdminModule />
+            ) : module === "partners" ? (
+              <PartnerAdminModule />
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </div>

@@ -129,7 +129,9 @@ function Profile() {
             volunteerEventData.joined_at = volunteerEvent?.joined_at?.toDate();
             volunteerEventData.left_at = volunteerEvent?.left_at?.toDate();
             volunteerEventData.abscences = volunteerEvent?.abscences?.toDate();
+            return true;
           }
+          return false;
         });
         volunteerEvents.push(volunteerEventData);
       });
@@ -204,13 +206,8 @@ function Profile() {
 
       fetchVolunteerHistory();
     }, []);
+    // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    console.log(driverCapacity)
-
-
-  }, [])
 
   const AccountInformation = () => {
     return (
