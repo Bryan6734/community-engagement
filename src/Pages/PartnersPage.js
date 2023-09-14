@@ -65,45 +65,7 @@ function PartnersPage() {
             <div className="selected-partner-info">
               <h2>{selectedPartner?.title}</h2>
               <p>{selectedPartner?.description}</p>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quo
-                modi nihil ut animi omnis et error deserunt, reiciendis possimus
-                officia dignissimos magnam, at corrupti perspiciatis ratione
-                repellendus doloremque quasi facere quas corporis eveniet nobis
-                illo cupiditate minus! Molestiae nobis doloribus impedit ad
-                autem suscipit quis voluptatibus. Vitae perspiciatis eligendi
-                eaque a maxime! Voluptates consequatur vel fugit architecto
-                quaerat corrupti libero, voluptatem culpa! Nemo, consequatur
-                dolorem! Commodi laudantium, quia enim dolor unde, obcaecati
-                deserunt labore repellat debitis fugiat sunt! Odio dolore,
-                accusantium nobis dolorum impedit architecto necessitatibus
-                totam. Quo, in consequuntur quaerat, quidem, suscipit aperiam ab
-                velit voluptatem nihil eveniet excepturi numquam sunt qui soluta
-                reprehenderit impedit dicta. Vel illo voluptate nam? Blanditiis
-                quibusdam labore unde, beatae nisi mollitia aspernatur eligendi.
-                Eaque similique atque dignissimos praesentium magni ipsa modi
-                nihil, doloribus sed officia cumque. Est, velit! Delectus
-                explicabo dicta officiis recusandae consequatur quos quis ab
-                consectetur aut culpa commodi perferendis temporibus ex iste
-                ipsum aliquam optio natus atque saepe deserunt modi possimus, ut
-                nobis quasi. Voluptas error esse impedit sit mollitia, explicabo
-                enim dolorem, dignissimos minima cupiditate nemo officiis
-                reiciendis. Quo debitis recusandae, explicabo deserunt provident
-                voluptate eos, omnis repudiandae, praesentium ad facere itaque
-                inventore beatae! Itaque provident necessitatibus, voluptatum
-                eius modi a blanditiis deserunt nobis ipsum, similique dolorum
-                nihil voluptate voluptas aliquid quia temporibus esse vel eum
-                aliquam accusantium quaerat culpa, aperiam distinctio? Nesciunt
-                laboriosam tempore earum ipsum quod? Eveniet ab, odio, impedit
-                omnis nihil nemo fugit tenetur rerum fuga ipsam et, ex sint eos
-                ea maxime corporis delectus non consectetur. Optio nihil dicta
-                reprehenderit. Consectetur eaque alias sequi tempore est
-                officiis placeat recusandae quia, ex voluptas nulla unde fuga
-                quasi magni explicabo at minus error ad cupiditate asperiores
-                laboriosam nemo quibusdam! Eligendi deserunt nisi veritatis
-                tempora itaque dolores quod, culpa sed dolore explicabo delectus
-                at voluptas exercitationem modi perspiciatis!
-              </p>
+
             </div>
           </div>
         </div>

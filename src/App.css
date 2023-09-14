@@ -16,4 +16,14 @@
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.hide {
+  transform: translateX(100%);
+  transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.8s;
+}
+
+.show {
+  transform: translateX(0);
+  transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.8s;
+}
+
 

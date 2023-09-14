@@ -144,7 +144,7 @@
 
 }
 
-@media screen and (max-width: 730px) {
+@media screen and (max-width: 760px) {
   .main-navbar .links :not(.open) {
     display: none;
   }
@@ -158,11 +158,6 @@
   }
 }
 
-@media screen and (max-width: 450px) {
-  .main-navbar .logo img {
-    width: 250px;
-  }
-}
 .dropdown {
   position: relative;
   display: inline-block;

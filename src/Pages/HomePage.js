@@ -20,7 +20,7 @@ function HomePage() {
 
   useEffect(() => {
     const options = {
-      strings: ["Volunteer with your community."],
+      strings: ["Engage with your community."],
       typeSpeed: 40,
       backDelay: 2000,
       backSpeed: 35,

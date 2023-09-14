@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import Menu from "./Menu";
+import menuIcon from "../Assets/menu-icon.png";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -8,6 +10,11 @@ function Navbar() {
   const handleLogoClick = () => {
     navigate("/");
   };
+
+  function openMenu() {
+    document.querySelector(".menu").classList.remove("hide");
+    document.querySelector(".menu").classList.add("show");
+  }
 
   return (
     <div className="Navbar">
@@ -23,8 +30,10 @@ function Navbar() {
           <Link to="/partners">Partners</Link>
           <Link to="/calendar">Calendar</Link>
           <Link to="/account">Profile</Link>
+          <img className="open" src={menuIcon} onClick={openMenu} alt="" />
         </div>
       </nav>
+      <Menu className="hide"></Menu>
     </div>
   );
 }
