@@ -3,12 +3,37 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
 import "./HomePage.css";
 import Typed from "typed.js";
+import image2 from "../Assets/hero-2.jpg";
+import image3 from "../Assets/hero-3.JPG";
+import image4 from "../Assets/hero-4.JPG";
+import image5 from "../Assets/hero-5.JPG";
+import image6 from "../Assets/hero-6.JPG";
 
 function HomePage() {
   const heroText = useRef(null);
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+
+  const [bgImageIndex, setBgImageIndex] = useState(0);
+  const bgImages = [image2, image3, image4, image5, image6];
+
+  useEffect(() => {
+    bgImages.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+
+    const interval = setInterval(() => {
+      const newIndex = (bgImageIndex + 1) % bgImages.length;
+      setBgImageIndex(newIndex);
+      console.log("rerender");
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [bgImageIndex]);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -36,7 +61,12 @@ function HomePage() {
 
   return (
     <div className="HomePage">
-      <div className="hero-section">
+      <div
+        className="hero-section"
+        style={{
+          backgroundImage: `url(${bgImages[bgImageIndex]})`,
+        }}
+      >
         <div className="contents">
           <div className="hero-text">
             <h1>
@@ -45,7 +75,14 @@ function HomePage() {
           </div>
 
           <div className="buttons">
-            <button className="learn-more" onClick={() => {navigate("/calendar")}}>Calendar</button>
+            <button
+              className="learn-more"
+              onClick={() => {
+                navigate("/calendar");
+              }}
+            >
+              Calendar
+            </button>
             <button
               className="login"
               onClick={() => {
