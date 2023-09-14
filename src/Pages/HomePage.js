@@ -33,6 +33,7 @@ function HomePage() {
     return () => {
       clearInterval(interval);
     };
+    //eslint-disable-next-line
   }, [bgImageIndex]);
 
   useEffect(() => {
