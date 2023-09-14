@@ -16,7 +16,7 @@ function HomePage() {
   const [user, setUser] = useState(null);
 
   const [bgImageIndex, setBgImageIndex] = useState(0);
-  const bgImages = [image2, image3, image4, image5, image6];
+  const bgImages = [image4, image2, image3, image5, image6];
 
   useEffect(() => {
     bgImages.forEach((image) => {
@@ -28,7 +28,7 @@ function HomePage() {
       const newIndex = (bgImageIndex + 1) % bgImages.length;
       setBgImageIndex(newIndex);
       console.log("rerender");
-    }, 10000);
+    }, 8000);
 
     return () => {
       clearInterval(interval);
