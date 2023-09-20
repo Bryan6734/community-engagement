@@ -1,7 +1,26 @@
 .admin-module {
 
   margin-top: 20px;
+  /* height: 500px; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.admin-module input,
+.admin-module .field select, .admin-module textarea {
+  width: 100%;
+  min-height: 55px;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 10px 20px;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  outline: none;
+  box-shadow: var(--secondary-box-shadow);
+}
 
-  height: 500px;
+#description {
+  min-height: 80px;
+  white-space:pre-wrap;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./InnerModal.css";
-import { collection, doc, addDoc } from "firebase/firestore";
+import { collection, doc, addDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 function InnerCreateModal({ selectedSlot, partnerSite }) {
@@ -67,8 +67,6 @@ function InnerCreateModal({ selectedSlot, partnerSite }) {
   };
 
   const handleSubmit = async () => {
-
-    
     if (
       !eventData.title ||
       !eventData.startTime ||
@@ -85,32 +83,38 @@ function InnerCreateModal({ selectedSlot, partnerSite }) {
       return;
     }
 
-    const newEvent = {
-      title: eventData.title,
-      start_time: new Date(eventData.startDate + " " + eventData.startTime),
-      end_time: new Date(eventData.endDate + " " + eventData.endTime),
-      final_date: new Date(eventData.finalDate),
-      recurrence: eventData.recurrence,
-      mode: eventData.mode,
-      max_volunteers: eventData.maxVolunteers,
-      description: eventData.description,
-      site: partnerSite?.id,
-      volunteers: {},
-    };
-
-    const partnerSiteRef = doc(db, "sites", partnerSite?.id);
-    newEvent.site = partnerSiteRef;
-
+    
     try {
+      const partnerSiteRef = doc(db, "sites", partnerSite?.id);
+
       const eventsCollectionRef = collection(db, "events");
+      console.log("before eventref")
+      const newEventRef = doc(eventsCollectionRef);
+
+
+      const newEvent = {
+        id: newEventRef,
+        title: eventData.title,
+        start_time: new Date(eventData.startDate + " " + eventData.startTime),
+        end_time: new Date(eventData.endDate + " " + eventData.endTime),
+        final_date: new Date(eventData.finalDate),
+        recurrence: eventData.recurrence,
+        mode: eventData.mode,
+        max_volunteers: eventData.maxVolunteers,
+        description: eventData.description,
+        site: partnerSiteRef,
+        volunteers: {},
+        created_at: serverTimestamp(),
+      };
+      console.log(newEvent)
+
       const docRef = await addDoc(eventsCollectionRef, newEvent);
       console.log("Document written with ID.  ", docRef.id);
 
       alert("Successfully posted");
       // refresh page but stay on admin page
-      navigate("/admin", { replace: true });
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
@@ -133,27 +137,6 @@ function InnerCreateModal({ selectedSlot, partnerSite }) {
         <div className="flex-top">
           <div className="row">
             <div>
-              <label htmlFor="">Start Time</label>
-              <input
-                type="time"
-                name="startTime"
-                value={eventData.startTime}
-                onChange={handleStartTimeChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="">End Time</label>
-              <input
-                type="time"
-                name="endTime"
-                value={eventData.endTime}
-                onChange={handleEndTimeChange}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div>
               <label htmlFor="">Date</label>
               <input
                 name="startDate"
@@ -170,6 +153,26 @@ function InnerCreateModal({ selectedSlot, partnerSite }) {
                 type="date"
                 value={eventData.endDate}
                 onChange={handleEndDateChange}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div>
+              <label htmlFor="">Start Time</label>
+              <input
+                type="time"
+                name="startTime"
+                value={eventData.startTime}
+                onChange={handleStartTimeChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="">End Time</label>
+              <input
+                type="time"
+                name="endTime"
+                value={eventData.endTime}
+                onChange={handleEndTimeChange}
               />
             </div>
           </div>

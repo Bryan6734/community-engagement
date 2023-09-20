@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .sign-up-event {
@@ -28,7 +29,7 @@
   cursor: not-allowed;
 }
 
-.InnerModal hr.divider {
+hr.divider {
   background-color: var(--accent-color);
   height: 3px;
   margin-bottom: 5px;
@@ -126,6 +127,19 @@
   font-size: 0.8rem;
 }
 
+.InnerModal .delete {
+  background-color: rgb(217, 8, 8);
+  box-shadow: var(--secondary-box-shadow);
+
+  font-size: 1.75rem;
+
+  color: white;
+  outline: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 @media (max-width: 500px) {
   .InnerModal .modal-body .flex-bottom {
     display: flex;
@@ -182,7 +196,6 @@
   border-spacing: 0;
   overflow-x: scroll;
   width: 100%;
-
 }
 
 .InnerModal .modal-table td,
@@ -190,4 +203,23 @@
   border: 1px solid #ddd;
   padding: 8px;
   overflow-x: scroll;
+}
+
+.InnerModal .remove-user:hover {
+  background-color: rgb(247, 177, 177);
+}
+
+.InnerModal .users-tbody tr {
+  width: 100%;
+  overflow-x: scroll;
+}
+.InnerModal .users-tbody tr td {
+  /* width: 20%; */
+  max-width: 20px;
+
+  overflow-x: scroll;
+}
+
+.InnerModal .users-tbody .copy:hover {
+  background-color: rgb(224, 255, 178);
 }

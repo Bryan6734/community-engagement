@@ -32,10 +32,11 @@ function InnerModal({ selectedEvent }) {
     try {
       await addUserToEvent(selectedEvent?.id);
       await addEventToUser(selectedEvent?.id);
-      alert("You have successfully signed up for this event! Please refresh.");
+      alert("You have successfully signed up for this event! Go to your profile to view your commitments.");
       setEvent(selectedEvent);
     } catch (error) {
       alert(error.message);
+      console.log(error)
     }
   };
 

@@ -1,7 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./InnerModal.css";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../config/firebase";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  documentId,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 import { removeUserFromEvent } from "../config/utils";
 
 function InnerEditModal({ selectedEvent, partnerSite }) {
@@ -42,7 +51,9 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
     maxVolunteers: 10,
     description: selectedEvent?.description,
     volunteers: selectedEvent?.volunteers,
+    id: selectedEvent?.id
   });
+  const [users, setUsers] = useState([]);
 
   const handleStartTimeChange = (e) => {
     setEventData({ ...eventData, startTime: e.target.value });
@@ -54,7 +65,7 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
 
   const handleStartDateChange = (e) => {
     setEventData({ ...eventData, startDate: e.target.value });
-};
+  };
 
   const handleEndDateChange = (e) => {
     setEventData({ ...eventData, endDate: e.target.value });
@@ -65,13 +76,10 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
   };
 
   const handleUpdate = async () => {
-
     try {
       const docRef = doc(db, "events", selectedEvent?.id);
 
-
       const partnerSiteRef = doc(db, "sites", partnerSite?.id);
-
 
       await setDoc(docRef, {
         title: eventData.title,
@@ -87,12 +95,57 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
       });
 
       alert("Event updated successfully!");
-
     } catch (error) {
       alert("Error updating event.");
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const eventsCollectionRef = collection(db, "events")
+      const docRef = doc(eventsCollectionRef, eventData?.id)
+      await deleteDoc(docRef)
+      alert("Successfully deleted event")
+    } catch (error){
+      alert(error)
+    }
+  }
+
+  useEffect(() => {
+    const getUsersFromList = async () => {
+      try {
+        const userIds = Object.keys(eventData?.volunteers).map((name) => {
+          return eventData?.volunteers[name];
+        });
+
+        if (userIds.length == 0) {
+          return
+        }
+
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where(documentId(), "in", userIds));
+        const querySnapshot = await getDocs(q);
+        const usersData = querySnapshot.docs.map((doc) => doc.data());
+        setUsers(usersData);
+      } catch (error) {
+        alert(error);
+        console.log(error)
+      }
+    };
+
+    getUsersFromList();
+  }, []);
+
+  useEffect(() => {}, [users]);
+
+  const handleCopyToClipboard = async (list) => {
+    try {
+      await navigator.clipboard.writeText(list.join("\n"));
+      alert("Copied to clipboard");
+    } catch (error) {
+      alert("Failed to copy to clipboard");
+    }
+  };
 
   return (
     <div className="InnerModal">
@@ -114,30 +167,65 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
               <tr>
                 <th>Name</th>
                 <th>Phone</th>
-                <th>Remove</th>
                 <th>Email</th>
+                <th>Driver</th>
+                <th>Remove</th>
               </tr>
             </thead>
 
-            <tbody>
-              {Object.keys(eventData?.volunteers).map((key) => {
+            <tbody className="users-tbody">
+              {users?.map((user) => {
                 return (
-                  <tr key={key}>
-                    <td>{key}</td>
-                    <td>123-456-7890</td>
-                    <td
-                      onClick={() => {
-                        removeUserFromEvent(
-                          eventData?.volunteers[key],
-                          selectedEvent?.id
-                        );
-                        console.log("Remove user from event");
-                      }}
-                    ></td>
-                    <td></td>
+                  <tr key={user?.first_name}>
+                    <td>{user?.first_name + " " + user?.last_name}</td>
+                    <td>{user?.phone_number}</td>
+                    <td>{user?.email}</td>
+                    <td>{user?.student_driver}</td>
+                    <td className="remove-user" onClick={() => {removeUserFromEvent(user?.id, eventData?.id)}}></td>
                   </tr>
                 );
               })}
+
+              <tr>
+                <td
+                  className="copy"
+                  onClick={() =>
+                    handleCopyToClipboard(
+                      users?.map((user) => {
+                        return user?.first_name + " " + user?.last_name;
+                      })
+                    )
+                  }
+                >
+                  Copy
+                </td>
+                <td
+                  className="copy"
+                  onClick={() =>
+                    handleCopyToClipboard(
+                      users?.map((user) => {
+                        return user?.phone_number;
+                      })
+                    )
+                  }
+                >
+                  Copy
+                </td>
+                <td
+                  className="copy"
+                  onClick={() =>
+                    handleCopyToClipboard(
+                      users?.map((user) => {
+                        return user?.email;
+                      })
+                    )
+                  }
+                >
+                  Copy
+                </td>
+                <td>N/A</td>
+                <td>N/A</td>
+              </tr>
             </tbody>
           </table>
 
@@ -269,7 +357,10 @@ function InnerEditModal({ selectedEvent, partnerSite }) {
 
         <div className="flex-bottom">
           <button className="sign-up-event" onClick={handleUpdate}>
-            Update Event
+            Update
+          </button>
+          <button className="delete sign-up-event" onClick={handleDelete}>
+            Delete
           </button>
         </div>
       </div>

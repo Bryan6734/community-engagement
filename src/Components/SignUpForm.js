@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 function SignUpForm({ isSigningIn, setIsSigningIn }) {
   const [firstName, setFirstName] = useState("");
@@ -63,6 +63,8 @@ function SignUpForm({ isSigningIn, setIsSigningIn }) {
         student_driver: studentDriver,
         driver_capacity: driverCapacity,
         volunteer_history: [],
+        id: user.uid,
+        created_at: serverTimestamp()
       };
       await setDoc(userRef, userData);
 

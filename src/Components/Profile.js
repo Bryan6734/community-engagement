@@ -55,7 +55,6 @@ function Profile() {
       setStudentDriver(userData?.student_driver);
       setDriverCapacity(userData?.driver_capacity?.toString());
 
-            
       //docs.google.com/spreadsheets/d/15nJV-2AO6Yr_xx778B5Y2L55xolB-EDVfPG-Da42TyQ/edit?usp=sharingusere
 
       localStorage.setItem("user", JSON.stringify(userData));
@@ -129,6 +128,7 @@ function Profile() {
             volunteerEventData.joined_at = volunteerEvent?.joined_at?.toDate();
             volunteerEventData.left_at = volunteerEvent?.left_at?.toDate();
             volunteerEventData.abscences = volunteerEvent?.abscences?.toDate();
+
             return true;
           }
           return false;
@@ -156,10 +156,12 @@ function Profile() {
     join_date,
     start_date,
     end_date,
+    final_date,
     recurrence
   ) => {
     const join = new Date(join_date);
     const start = new Date(start_date);
+    const final = new Date(final_date);
     const end = new Date(end_date);
 
     if (recurrence.toLowerCase() === "weekly") {
@@ -177,7 +179,7 @@ function Profile() {
 
     // find number of weeks between start and join date
     let weeksBetween = Math.abs(
-      Math.floor((start.getTime() - join.getTime()) / (1000 * 60 * 60 * 24 * 7))
+      Math.floor((end.getTime() - join.getTime()) / (1000 * 60 * 60 * 24 * 7))
     );
 
     // divide by recurrence to get nubmer of weeks volunteered
@@ -193,6 +195,59 @@ function Profile() {
     );
 
     return hoursVolunteered;
+  };
+
+  const calculateNextMeeting = (
+    join_date,
+    start_date,
+    end_date,
+    final_date,
+    recurrence
+  ) => {
+    const join = new Date(join_date);
+    const start = new Date(start_date);
+    const final = new Date(final_date);
+    const end = new Date(end_date);
+
+    if (recurrence.toLowerCase() === "weekly") {
+      recurrence = 1;
+    } else if (
+      recurrence.toLowerCase() === "biweekly" ||
+      recurrence.toLowerCase() === "bi-weekly"
+    ) {
+      recurrence = 2;
+    } else if (recurrence.toLowerCase() === "monthly") {
+      recurrence = 4;
+    } else {
+      recurrence = 1;
+    }
+
+    let weeksBetween = Math.abs(
+      Math.floor(
+        (final.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)
+      )
+    );
+
+    const now = new Date();
+    let next_meeting = "";
+
+    for (let week = 0; week < weeksBetween; week += recurrence) {
+      // if now is BEFORE the first start, next meeting is the start date
+      if (now.getTime() <= start.getTime()) {
+        next_meeting = start;
+        break;
+      }
+
+      start.setDate(start.getDate() + 7 * recurrence);
+      console.log(start);
+
+      console.log(recurrence + "week diff" + 7 * week);
+      if (start.getTime() > final.getTime()) {
+        break;
+      }
+    }
+
+    return next_meeting;
   };
 
   useEffect(() => {
@@ -310,18 +365,63 @@ function Profile() {
   const VolunteerHistoryEvent = (new_event) => {
     const event = new_event?.new_event;
 
+    const hasLeft = !(event?.left_at === null || event?.left_at === undefined);
+
+    const hasLeftComponent = () => {
+      if (hasLeft) {
+        return <></>;
+      } else {
+        return (
+          <p>
+            - Next Meeting:{" "}
+            <span className="emphasis bold blue">
+              {formatDate(
+                calculateNextMeeting(
+                  event?.joined_at,
+                  event?.start_time.toDate(),
+                  event?.end_time.toDate(),
+                  event?.final_date.toDate(),
+                  event?.recurrence
+                )
+              )}
+            </span>
+          </p>
+        );
+      }
+    };
+
     return (
       <div className="VolunteerHistoryEvent">
         <div className="left">
-          <h3>{event?.title}</h3>
-          <p>Started on {formatDate(event?.start_time.toDate())}</p>
-          <p>
-            {toTitleCase(event?.recurrence)} from{" "}
-            {formatTime(event?.start_time.toDate())} {" - "}{" "}
-            {formatTime(event?.end_time.toDate())}
-          </p>
+          <div className="">
+            <h3>{event?.title}</h3>
+            <p className="id">Event ID: {event?.id}</p>
+          </div>
+          <div className="">
+            <hr className="divider" />
+            <p className="bold">Frequency</p>
+            <div className="">
+              <p>
+                - {toTitleCase(event?.recurrence)} from{" "}
+                {formatTime(event?.start_time.toDate())} {" - "}{" "}
+                {formatTime(event?.end_time.toDate())}
+              </p>
+              <p></p>
+
+              {hasLeftComponent(hasLeft)}
+            </div>
+            <p className="bold">Dates</p>
+            <p>
+              - {formatDate(event?.start_time.toDate())} to{" "}
+              {formatDate(event?.final_date.toDate())}
+            </p>
+          </div>
+          <div className="">
+            <p>{event?.description}</p>
+          </div>
         </div>
-        <div className="right">
+
+        {/* <div className="right">
           <p className="num">
             {calculateHoursVolunteered(
               event?.joined_at,
@@ -331,7 +431,7 @@ function Profile() {
             )}{" "}
           </p>
           <p className="bold">hours</p>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -340,6 +440,7 @@ function Profile() {
     return (
       <ul className="VolunteerHistory">
         {volunteerHistory.map((volunteerEvent) => {
+          console.log(volunteerEvent);
           return (
             <VolunteerHistoryEvent
               key={volunteerEvent?.id}

@@ -69,6 +69,7 @@ export const addUserToEvent = async (eventId) => {
 };
 
 export const removeUserFromEvent = async (userId, eventId) => {
+  console.log(userId, eventId)
   try {
     const eventRef = doc(db, "events", eventId);
     const eventDoc = await getDoc(eventRef);
@@ -76,25 +77,28 @@ export const removeUserFromEvent = async (userId, eventId) => {
 
     const newVolunteers = {};
 
+    
     Object.keys(volunteers).forEach((key) => {
       const volunteerId = volunteers[key];
       if (volunteerId !== userId) {
         newVolunteers[key] = volunteerId;
       } else {
-        console.log("removed user in loop");
+        alert("Removed user.")
       }
     });
-
+    // remove the user from the event's volunteers
     const updateResult = await updateDoc(eventRef, {
       volunteers: newVolunteers,
     });
     console.log(updateResult)
   } catch (error) {
     alert("Failed to update event. Please try again.");
+    console.log(error)
     return;
   }
 
   try {
+    // removes the event from user's volunteer history
     const userRef = doc(db, "users", userId);
     const userDoc = await getDoc(userRef);
     const volunteerHistory = userDoc.data().volunteer_history || [];
