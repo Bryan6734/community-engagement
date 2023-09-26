@@ -23,14 +23,14 @@ function AdminPage() {
         </div>
         <div className="block">
           <div className="search-buttons">
-            <button onClick={() => handleModuleChange("users")}>Users</button>
+            {/* <button onClick={() => handleModuleChange("users")}>Users</button> */}
             <button onClick={() => handleModuleChange("events")}>Events</button>
             <button onClick={() => handleModuleChange("partners")}>
               Partners
             </button>
-            <button onClick={() => handleModuleChange("calendar")}>
+            {/* <button onClick={() => handleModuleChange("calendar")}>
               Calendar
-            </button>
+            </button> */}
           </div>
 
           <div className="search-bar">
